@@ -1,0 +1,222 @@
+import { useEffect, useState } from "react";
+import Button from "../Atom/Button";
+import { patchWithAuth, postWithAuth } from "../provider/helper/axios";
+import {
+  ACCEPTPROJECTREQUEST,
+  REJECTPROJECTREQUEST,
+} from "../../utils/constants/urls";
+import SweetAlert from "../components/SweetAlert";
+import { useSelector, useDispatch } from "react-redux";
+import Tooltip from "../components/Tooltip";
+import ViewMultipleSampleCpi from "../project/view/ViewMultipleSampleCpi";
+import Popup from "../Atom/Popup";
+import {
+  addNotification,
+  toggleViewNotification,
+} from "../../utils/slices/notificationSlice";
+import { notificationCount } from "../../utils/apis/notificationCount";
+import { ProjectData } from "../../utils/apis/projectData";
+import { setProjects } from "../../utils/slices/projectSlice";
+import { toggleViewMultipleCpiSample } from "../../utils/slices/addMutipleSampleCpiSlice";
+
+const OpenNotification = ({ notification_btn_ref }) => {
+  const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
+  const dispatch = useDispatch();
+  const isMultipleCpiSample = useSelector(
+    (store) => store.MultiSampleCpiRecord.isViewMultipleSampleCpiRecords
+  );
+  const { notificationList } = useSelector((store) => store.notification);
+  const project = useSelector((store) => store.projectData.projects);
+  const token = localStorage.getItem("token");
+
+  const [multipleView, setMultipleView] = useState();
+  const [projectData, setProjectData] = useState([]);
+
+  useEffect(() => {
+    const fetchProjectData = () => {
+      setProjectData(project);
+    };
+    fetchProjectData();
+  }, [token]);
+
+  const handleAccept = async (id) => {
+    const response = await postWithAuth(ACCEPTPROJECTREQUEST(id));
+    if (response?.status == true) {
+      SweetAlert({
+        title: "Success",
+        text: response?.data?.message,
+        icon: "success",
+      });
+      dispatch(toggleViewNotification());
+      dispatch(addNotification([]));
+      const notificationCountfreshData = await notificationCount();
+      dispatch(addNotification(notificationCountfreshData));
+      const projectData = await ProjectData();
+      dispatch(setProjects(projectData));
+    } else {
+      SweetAlert({
+        title: "Error",
+        text:
+          response.ex.response.data.tentative_end_date ||
+          "Somethings went wrong",
+        icon: "error",
+      });
+    }
+  };
+
+  const handleViewCpi = (dataType) => {
+    const dataToView =
+      dataType === "old" ? getOldProjectData : notificationList;
+    dispatch(toggleViewMultipleCpiSample(true));
+    setMultipleView(dataToView);
+  };
+
+  const getOldProjectData = projectData?.filter((item) => {
+    return notificationList?.some(
+      (notificationItem) => notificationItem?.project?.id === item?.id
+    );
+  });
+
+  const totalNewProjectSampleCount = notificationList?.reduce((acc, item) => {
+    return (acc = acc + Number(item?.pending_changes?.sample)) || 0;
+  }, 0);
+  const handleReject = async (id) => {
+    const response = await patchWithAuth(REJECTPROJECTREQUEST(id));
+    if (response?.status == true) {
+      SweetAlert({
+        title: "Success",
+        text: response?.data?.message,
+        icon: "success",
+      });
+      dispatch(toggleViewNotification());
+      dispatch(addNotification([]));
+      const notificationCountfreshData = await notificationCount();
+      dispatch(addNotification(notificationCountfreshData));
+      const projectData = await ProjectData();
+      dispatch(setProjects(projectData));
+    }
+    dispatch(toggleViewNotification());
+  };
+  const combinedRemarks = notificationList
+    ?.map((data) => data?.pending_changes?.remark)
+    .join(", ");
+
+  return (
+    <div className="z-40" ref={notification_btn_ref}>
+      <div
+        className={`${
+          darkMode
+            ? "bg-black text-white border-b-white"
+            : "text-black border-b-black"
+        } mb-2 cursor-pointer p-4 rounded-md  mt-4`}
+      >
+        <div>
+          <h3>
+            Edit Request For Project :
+            <span className="font-bold">{getOldProjectData[0]?.name}</span>
+          </h3>
+        </div>
+        <div className="flex justify-between relative">
+          <div className="w-1/2 p-4">
+            <div className="border">
+              <h3 className="border-b-black border font-bold text-xl">
+                Old Project Data
+              </h3>
+              <div className="border-b-black border">
+                Project Code:
+                {getOldProjectData[0]?.project_code?.toUpperCase()}
+              </div>
+              <div className="border-b-black border flex text-center justify-center items-center">
+                Previous Sample Size:
+                {getOldProjectData[0]?.project_samples.length > 1 ? (
+                  <Tooltip text={"View Multiple CPI"} className={"w-40"}>
+                    <span
+                      className="text-xl no-underline"
+                      onClick={() => handleViewCpi("old")}
+                    >
+                      {getOldProjectData[0]?.sample}
+                      <span className="cursor-pointer text-xs ml-2 text-blue-700 underline">
+                        View Details
+                      </span>
+                    </span>
+                  </Tooltip>
+                ) : (
+                  getOldProjectData[0]?.sample
+                )}
+              </div>
+              <div className="border-b-black border">
+                Previous Date Given:
+                {getOldProjectData[0]?.tentative_end_date?.split("T")[0]}
+              </div>
+            </div>
+          </div>
+          <div className="w-1/2 p-4">
+            <h3 className="border-b-black border font-bold text-xl">
+              New Required Project Data
+            </h3>
+            <div className="border-b-black border">
+              Project Code:
+              {getOldProjectData[0]?.project_code?.toUpperCase()}
+            </div>
+            <div className="border-b-black border flex justify-center items-center">
+              Sample Revised:
+              {getOldProjectData[0]?.project_samples.length > 0 ? (
+                <Tooltip text={"View Multiple CPI"} className={"w-40"}>
+                  <span
+                    className="text-xl no-underline"
+                    onClick={() => handleViewCpi("new")}
+                  >
+                    {totalNewProjectSampleCount}
+                    <span className="cursor-pointer text-xs ml-2 text-blue-700 underline">
+                      View Details
+                    </span>
+                  </span>
+                </Tooltip>
+              ) : (
+                getOldProjectData[0]?.sample
+              )}
+            </div>
+            <div className="border-b-black border">
+              Date Required:
+              {notificationList[0]?.pending_changes?.tentative_end_date?.split(
+                "T"
+              )[0] || getOldProjectData[0]?.tentative_end_date?.split("T")[0]}
+            </div>
+            <div className="">
+              Reason:{" "}
+              {combinedRemarks || notificationList[0]?.reason_for_adjustment}
+            </div>
+            <div className="flex">
+              <Button
+                className=" bg-green-500 p-4 mt-8 mr-2 md:w-1/2 w-full text-white font-bold"
+                onClick={() => handleAccept(notificationList[0]?.project?.id)}
+                // onClick={() => handleReject(notificationList[0]?.id)}
+
+                name="Accept"
+              />
+              <Button
+                className=" bg-red-500 p-4 mt-8 mr-2 md:w-1/2 w-full text-white font-bold"
+                onClick={() => handleReject(notificationList[0]?.project?.id)}
+                name="Reject"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      {isMultipleCpiSample && (
+        <Popup>
+          <ViewMultipleSampleCpi viewRecord={multipleView} />
+        </Popup>
+      )}
+      <Button
+        className="absolute top-0 right-2 border rounded-md p-2 bg-red-300 hover:bg-red-500 text-whilte"
+        onClick={() => {
+          dispatch(toggleViewNotification());
+        }}
+        name={"X"}
+      />
+    </div>
+  );
+};
+
+export default OpenNotification;

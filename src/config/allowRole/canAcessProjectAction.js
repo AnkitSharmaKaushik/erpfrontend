@@ -1,0 +1,86 @@
+export const canAcessProjectAction = {
+  addManDay: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      "Manager",
+      "Sr.Manager",
+      "Ass.Manager",
+      "Team Lead",
+    ],
+    department: [2],
+  },
+  editProject: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      "Manager",
+      "Sr.Manager",
+      "Ass.Manager",
+      "Team Lead",
+    ],
+    department: [2],
+  },
+  chnageStatus: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      "Manager",
+      "Sr.Manager",
+      "Ass.Manager",
+      "Team Lead",
+    ],
+    department: [2],
+  },
+  getInvoice: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      // "Manager",
+      //   "Sr.Manager",
+      //   "Ass.Manager",
+      //   "Team Lead",
+    ],
+    department: [3],
+  },
+  generateInvoice: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      // "Manager",
+      //   "Sr.Manager",
+      //   "Ass.Manager",
+      //   "Team Lead",
+    ],
+    department: [3],
+  },
+  UploadSow: {
+    role: [
+      //   "Admin",
+      "Director",
+      //   "HOD",
+      "Manager",
+      "Sr.Manager",
+      "Ass.Manager",
+      "Team Lead",
+    ],
+    department: [1],
+  },
+  raiseCBR: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      "Manager",
+      "Sr.Manager",
+      "Ass.Manager",
+      "Team Lead",
+    ],
+    department: [2],
+  },
+};

@@ -1,0 +1,131 @@
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
+import ProjectReportColumn from "./projectReport/ProjectReportColumn";
+import { ProjectReportData } from "./projectReport/ProjectReportData";
+import ProjectNameAndFilter from "../project/filter/ProjectNameAndFilter";
+import FilterProject from "../project/filter/FilterProject";
+import Popup from "../Atom/Popup";
+import ViewMultipleSampleCpi from "../project/view/ViewMultipleSampleCpi";
+import ViewSowUploadList from "../project/view/ViewSowUploadList";
+import useProjectData from "../../utils/hooks/useProjectData";
+import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import ViewAddlnFee from "../project/view/VIewAddlnFee";
+
+const ProjectReport = () => {
+  const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
+  const { isViewMultipleSampleCpiRecords } = useSelector(
+    (store) => store.addMultipleSampleCpi
+  );
+  const { showSowList, showAddlnFee } = useSelector((store) => store.dataTable);
+
+  useProjectData();
+
+  const isDrawerOpen = false;
+
+  const data = ProjectReportData();
+  const columns = ProjectReportColumn();
+
+  const table = useReactTable({
+    columns,
+    data,
+    getCoreRowModel: useMemo(() => getCoreRowModel(), []),
+    getFilteredRowModel: useMemo(() => getFilteredRowModel(), []),
+  });
+
+  return (
+    <div
+      className={`${
+        darkMode ? "bg-black border-white border" : "bg-white"
+      } p-4 rounded-md mt-8 shadow-lg w-full`}
+    >
+      <div className="w-full">
+        <div
+          className={`${
+            isDrawerOpen ? "opacity-30 relative overflow-hidden" : "opacity-100"
+          }`}
+        >
+          <ProjectNameAndFilter
+            data={data}
+            ProjectHeading={"Project Report"}
+            NoProjectHeading={"No Project Found"}
+          />
+          <div className="text-right flex justify-end m-2">
+            <FilterProject />
+          </div>
+          <div className="">
+            <div className="relative overflow-x-scroll">
+              <table className="w-full border border-gray-300 shadow-lg rounded-lg ">
+                <thead className="primary_color text-white">
+                  {table.getHeaderGroups().map((headerGroup) => (
+                    <tr key={headerGroup.id} className="border border-gray-600">
+                      {headerGroup.headers.map((header) => (
+                        <th
+                          key={header.id}
+                          colSpan={header.colSpan}
+                          className="px-4 py-3 border border-gray-600 text-left text-sm font-semibold"
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+                <tbody className="divide-y divide-gray-300 bg-white">
+                  {table.getRowModel().rows.map((row, rowIndex) => (
+                    <tr
+                      key={row.id}
+                      className={`border border-gray-300 ${
+                        rowIndex % 2 === 0 ? "bg-gray-100" : "bg-white"
+                      } hover:bg-gray-200 transition duration-200`}
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <td
+                          key={cell.id}
+                          className="px-4 py-2 border border-gray-300 text-sm text-gray-800"
+                        >
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* )} */}
+      {isViewMultipleSampleCpiRecords && (
+        <Popup>
+          <ViewMultipleSampleCpi />
+        </Popup>
+      )}
+      {showAddlnFee && (
+        <Popup>
+          <ViewAddlnFee />
+        </Popup>
+      )}
+      {showSowList && (
+        <Popup>
+          <h1>This is Sow List</h1>
+          <ViewSowUploadList />
+        </Popup>
+      )}
+    </div>
+  );
+};
+
+export default ProjectReport;
