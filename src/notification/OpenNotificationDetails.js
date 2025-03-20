@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Button from "../Atom/Button";
 import { patchWithAuth, postWithAuth } from "../provider/helper/axios";
 import {
@@ -6,7 +7,6 @@ import {
   REJECTPROJECTREQUEST,
 } from "../../utils/constants/urls";
 import SweetAlert from "../components/SweetAlert";
-import { useSelector, useDispatch } from "react-redux";
 import Tooltip from "../components/Tooltip";
 import ViewMultipleSampleCpi from "../project/view/ViewMultipleSampleCpi";
 import Popup from "../Atom/Popup";
@@ -17,30 +17,36 @@ import {
 import { notificationCount } from "../../utils/apis/notificationCount";
 import { ProjectData } from "../../utils/apis/projectData";
 import { setProjects } from "../../utils/slices/projectSlice";
-import { toggleViewMultipleCpiSample } from "../../utils/slices/addMutipleSampleCpiSlice";
+import {
+  addMultipleSample,
+  toggleViewMultipleCpiSample,
+} from "../../utils/slices/addMutipleSampleCpiSlice";
 
 const OpenNotification = ({ notification_btn_ref }) => {
   const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
   const dispatch = useDispatch();
-  const isMultipleCpiSample = useSelector(
-    (store) => store.MultiSampleCpiRecord.isViewMultipleSampleCpiRecords
+  const { isViewMultipleSampleCpiRecords } = useSelector(
+    (store) => store.addMultipleSampleCpi
   );
   const { notificationList } = useSelector((store) => store.notification);
-  const project = useSelector((store) => store.projectData.projects);
+  const { page_number, page_size, activeTab, projects } = useSelector(
+    (store) => store.projectData
+  );
   const token = localStorage.getItem("token");
 
-  const [multipleView, setMultipleView] = useState();
   const [projectData, setProjectData] = useState([]);
 
   useEffect(() => {
     const fetchProjectData = () => {
-      setProjectData(project);
+      setProjectData(projects);
     };
     fetchProjectData();
   }, [token]);
 
   const handleAccept = async (id) => {
-    const response = await postWithAuth(ACCEPTPROJECTREQUEST(id));
+    const response = await postWithAuth(ACCEPTPROJECTREQUEST(id), {
+      is_approved: "True",
+    });
     if (response?.status == true) {
       SweetAlert({
         title: "Success",
@@ -48,11 +54,10 @@ const OpenNotification = ({ notification_btn_ref }) => {
         icon: "success",
       });
       dispatch(toggleViewNotification());
-      dispatch(addNotification([]));
       const notificationCountfreshData = await notificationCount();
       dispatch(addNotification(notificationCountfreshData));
-      const projectData = await ProjectData();
-      dispatch(setProjects(projectData));
+      const projectData = await ProjectData(page_number, page_size, activeTab);
+      dispatch(setProjects(projectData.results));
     } else {
       SweetAlert({
         title: "Error",
@@ -63,25 +68,34 @@ const OpenNotification = ({ notification_btn_ref }) => {
       });
     }
   };
-
   const handleViewCpi = (dataType) => {
-    const dataToView =
-      dataType === "old" ? getOldProjectData : notificationList;
+    let data;
+    if (dataType === "old") {
+      data = getOldProjectData;
+    } else {
+      data = {
+        id: 2243,
+        project_samples: notificationList.map((item) => item.pending_changes),
+      };
+    }
+    dispatch(addMultipleSample(data));
     dispatch(toggleViewMultipleCpiSample(true));
-    setMultipleView(dataToView);
   };
 
-  const getOldProjectData = projectData?.filter((item) => {
-    return notificationList?.some(
+  const getOldProjectData = projectData?.find((item) =>
+    notificationList?.some(
       (notificationItem) => notificationItem?.project?.id === item?.id
-    );
-  });
+    )
+  );
 
   const totalNewProjectSampleCount = notificationList?.reduce((acc, item) => {
     return (acc = acc + Number(item?.pending_changes?.sample)) || 0;
   }, 0);
+
   const handleReject = async (id) => {
-    const response = await patchWithAuth(REJECTPROJECTREQUEST(id));
+    const response = await patchWithAuth(REJECTPROJECTREQUEST(id), {
+      is_rejected: "False",
+    });
     if (response?.status == true) {
       SweetAlert({
         title: "Success",
@@ -89,20 +103,18 @@ const OpenNotification = ({ notification_btn_ref }) => {
         icon: "success",
       });
       dispatch(toggleViewNotification());
-      dispatch(addNotification([]));
       const notificationCountfreshData = await notificationCount();
       dispatch(addNotification(notificationCountfreshData));
-      const projectData = await ProjectData();
-      dispatch(setProjects(projectData));
+      const projectData = await ProjectData(page_number, page_size, activeTab);
+      dispatch(setProjects(projectData.results));
     }
-    dispatch(toggleViewNotification());
   };
   const combinedRemarks = notificationList
     ?.map((data) => data?.pending_changes?.remark)
     .join(", ");
 
   return (
-    <div className="z-40" ref={notification_btn_ref}>
+    <div className="" ref={notification_btn_ref}>
       <div
         className={`${
           darkMode
@@ -113,7 +125,7 @@ const OpenNotification = ({ notification_btn_ref }) => {
         <div>
           <h3>
             Edit Request For Project :
-            <span className="font-bold">{getOldProjectData[0]?.name}</span>
+            <span className="font-bold">{getOldProjectData?.name}</span>
           </h3>
         </div>
         <div className="flex justify-between relative">
@@ -124,29 +136,29 @@ const OpenNotification = ({ notification_btn_ref }) => {
               </h3>
               <div className="border-b-black border">
                 Project Code:
-                {getOldProjectData[0]?.project_code?.toUpperCase()}
+                {getOldProjectData?.project_code?.toUpperCase()}
               </div>
               <div className="border-b-black border flex text-center justify-center items-center">
                 Previous Sample Size:
-                {getOldProjectData[0]?.project_samples.length > 1 ? (
+                {getOldProjectData?.project_samples.length > 1 ? (
                   <Tooltip text={"View Multiple CPI"} className={"w-40"}>
                     <span
                       className="text-xl no-underline"
                       onClick={() => handleViewCpi("old")}
                     >
-                      {getOldProjectData[0]?.sample}
+                      {getOldProjectData?.sample}
                       <span className="cursor-pointer text-xs ml-2 text-blue-700 underline">
                         View Details
                       </span>
                     </span>
                   </Tooltip>
                 ) : (
-                  getOldProjectData[0]?.sample
+                  getOldProjectData?.sample
                 )}
               </div>
               <div className="border-b-black border">
                 Previous Date Given:
-                {getOldProjectData[0]?.tentative_end_date?.split("T")[0]}
+                {getOldProjectData?.tentative_end_date?.split("T")[0]}
               </div>
             </div>
           </div>
@@ -156,11 +168,11 @@ const OpenNotification = ({ notification_btn_ref }) => {
             </h3>
             <div className="border-b-black border">
               Project Code:
-              {getOldProjectData[0]?.project_code?.toUpperCase()}
+              {getOldProjectData?.project_code?.toUpperCase()}
             </div>
             <div className="border-b-black border flex justify-center items-center">
               Sample Revised:
-              {getOldProjectData[0]?.project_samples.length > 0 ? (
+              {notificationList.length > 1 ? (
                 <Tooltip text={"View Multiple CPI"} className={"w-40"}>
                   <span
                     className="text-xl no-underline"
@@ -173,14 +185,14 @@ const OpenNotification = ({ notification_btn_ref }) => {
                   </span>
                 </Tooltip>
               ) : (
-                getOldProjectData[0]?.sample
+                getOldProjectData?.sample
               )}
             </div>
             <div className="border-b-black border">
               Date Required:
               {notificationList[0]?.pending_changes?.tentative_end_date?.split(
                 "T"
-              )[0] || getOldProjectData[0]?.tentative_end_date?.split("T")[0]}
+              )[0] || getOldProjectData?.tentative_end_date?.split("T")[0]}
             </div>
             <div className="">
               Reason:{" "}
@@ -190,8 +202,6 @@ const OpenNotification = ({ notification_btn_ref }) => {
               <Button
                 className=" bg-green-500 p-4 mt-8 mr-2 md:w-1/2 w-full text-white font-bold"
                 onClick={() => handleAccept(notificationList[0]?.project?.id)}
-                // onClick={() => handleReject(notificationList[0]?.id)}
-
                 name="Accept"
               />
               <Button
@@ -203,14 +213,18 @@ const OpenNotification = ({ notification_btn_ref }) => {
           </div>
         </div>
       </div>
-      {isMultipleCpiSample && (
+      {isViewMultipleSampleCpiRecords && (
         <Popup>
-          <ViewMultipleSampleCpi viewRecord={multipleView} />
+          <ViewMultipleSampleCpi />
         </Popup>
       )}
       <Button
         className="absolute top-0 right-2 border rounded-md p-2 bg-red-300 hover:bg-red-500 text-whilte"
-        onClick={() => {
+        onClick={async () => {
+          const response = await notificationCount();
+          if (response) {
+            dispatch(addNotification(response));
+          }
           dispatch(toggleViewNotification());
         }}
         name={"X"}

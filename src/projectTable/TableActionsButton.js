@@ -18,6 +18,7 @@ import UpdateSowButton from "../projectOperationButtons/UpdateSowButton";
 import { canAcessProjectAction } from "../config/allowRole/canAcessProjectAction";
 import CanUserView from "../config/allowUserCanAccess/CanUserView";
 import { useHandleOutsideClick } from "../../utils/hooks/useHandleOutSideClick";
+import ViewCbrButton from "../projectOperationButtons/ViewCbrButton";
 
 const TableActionsButton = ({ record, index }) => {
   const dispatch = useDispatch();
@@ -72,6 +73,11 @@ const TableActionsButton = ({ record, index }) => {
             />
             <CanUserView
               element={<RaiseCbrButton />}
+              allowDepartments={canAcessProjectAction.raiseCBR.department}
+              allowedRoles={canAcessProjectAction.raiseCBR.role}
+            />
+              <CanUserView
+              element={<ViewCbrButton />}
               allowDepartments={canAcessProjectAction.raiseCBR.department}
               allowedRoles={canAcessProjectAction.raiseCBR.role}
             />

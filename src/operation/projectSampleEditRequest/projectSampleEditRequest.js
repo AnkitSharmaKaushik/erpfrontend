@@ -5,8 +5,6 @@ import { patchWithAuth } from "../../provider/helper/axios";
 import { EDITPROJECTREQUEST } from "../../../utils/constants/urls";
 import Loader from "../../Atom/Loader";
 import SweetAlert from "../../components/SweetAlert";
-import { ProjectData } from "../../../utils/apis/projectData";
-import { setProjects } from "../../../utils/slices/projectSlice";
 import Popup from "../../Atom/Popup";
 import { getMinDate } from "../../../utils/helperFunction/dateLimit";
 import { DateValidationForWeekend } from "../../../utils/helperFunction/dateValidationForWeekend";
@@ -16,9 +14,7 @@ import { toggleIsEdit } from "../../../utils/slices/dataTableSlice";
 import ProjectSamplesTable from "./ProjectMultipleSampleTable";
 
 const ProjectSampleEditRequest = () => {
-  const { page_number, page_size, activeTab, projects } = useSelector(
-    (store) => store.projectData
-  );
+  const { projects } = useSelector((store) => store.projectData);
   const { selectedRecord } = useSelector((store) => store.dataTable);
   const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
 
@@ -108,8 +104,6 @@ const ProjectSampleEditRequest = () => {
       dispatch(toggleIsEdit());
       const response = await notificationCount();
       dispatch(addNotification(response));
-      const projectData = await ProjectData(page_number, page_size, activeTab);
-      dispatch(setProjects(projectData?.results));
     } else {
       SweetAlert({
         title: response?.ex?.response?.data?.error,
@@ -119,7 +113,6 @@ const ProjectSampleEditRequest = () => {
       setLoader(false);
       dispatch(toggleIsEdit());
     }
-    dispatch(addNotification(response?.data));
   };
 
   const handleEditUpdate = () => {

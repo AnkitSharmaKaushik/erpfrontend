@@ -44,7 +44,7 @@ export const TableData = () => {
 
     return filteredData.map((item) => ({
       id: item?.id,
-      project_code: item?.project_code,
+      project_code: item?.project_code.toUpperCase(),
       name: item?.name,
       cpi: item?.cpi ? Number(item?.cpi).toFixed(2) : "0.00",
       clients: item?.clients?.name,

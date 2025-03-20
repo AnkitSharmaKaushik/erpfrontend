@@ -6,9 +6,10 @@ import Label from "../../Atom/Label";
 import SweetAlert from "../../components/SweetAlert";
 import { toggleChangeProjectStatus } from "../../../utils/slices/dataTableSlice";
 import { ProjectData } from "../../../utils/apis/projectData";
-import { setProjects } from "../../../utils/slices/projectSlice";
+import { addProjectWithoutAnyFilter, setProjects } from "../../../utils/slices/projectSlice";
 import { ChangeStatus } from "../../fetchApis/projects/changeStatus/changeStatus";
 import { toggleChangeProjectStatus } from "../../../utils/slices/dataTableSlice";
+import { getDashboardProject } from "../../fetchApis/dashboard";
 
 const UpdateStatus = () => {
   const { page_number, page_size, activeTab } = useSelector(
@@ -45,6 +46,10 @@ const UpdateStatus = () => {
       });
       const projectData = await ProjectData(page_number, page_size, activeTab);
       dispatch(setProjects(projectData?.results));
+      const response = await getDashboardProject();
+      if (response.length > 0) {
+        dispatch(addProjectWithoutAnyFilter(response));
+      }
     }
   };
 

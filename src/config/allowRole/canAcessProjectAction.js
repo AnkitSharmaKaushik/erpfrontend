@@ -83,4 +83,16 @@ export const canAcessProjectAction = {
     ],
     department: [2],
   },
+  viewCBR: {
+    role: [
+      "Admin",
+      "Director",
+      "HOD",
+      "Manager",
+      "Sr.Manager",
+      "Ass.Manager",
+      "Team Lead",
+    ],
+    department: [2],
+  },
 };

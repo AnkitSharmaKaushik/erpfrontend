@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaLongArrowAltLeft } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -7,22 +7,15 @@ import ManDaysDetails from "./ManDaysDetails.js";
 import { BASEURL } from "../../../utils/constants/urls.js";
 import SweetAlert from "../../components/SweetAlert.js";
 import Popup from "../../Atom/Popup.js";
-import {
-  toggleCloseView,
-  toggleIsView,
-} from "../../../utils/slices/dataTableSlice.js";
+import { toggleCloseView } from "../../../utils/slices/dataTableSlice.js";
 
 const ViewProjectDetails = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
-  const projectResponse = useSelector(
-    (store) => store.projectData.filteredProjects
-  );
 
   const [isManDaysDetails, setIsManDaysDetails] = useState(false);
   const [perDayDetailsData, setPerDayDetailsData] = useState([]);
-  const [currentProjectDetails, setCurrentProjectDetails] = useState(null);
   const location = useLocation();
   const { state: data } = location;
 
@@ -46,18 +39,6 @@ const ViewProjectDetails = () => {
     setIsManDaysDetails(false);
   };
 
-  useEffect(() => {
-    const fetchProjectData = () => {
-      if (projectResponse) {
-        const currentProject = projectResponse.find(
-          (item) => item.project_code === data?.project_code
-        );
-        setCurrentProjectDetails(currentProject || null);
-      }
-    };
-    fetchProjectData();
-  }, [data]);
-
   const renderListItem = (label, value, index, hasDetails = false) => (
     <li
       key={label}
@@ -80,7 +61,7 @@ const ViewProjectDetails = () => {
         {hasDetails && value && (
           <span
             className="absolute top-1 right-1 cursor-pointer underline text-blue-700"
-            onClick={() => handleViewDetails(currentProjectDetails.id)}
+            onClick={() => handleViewDetails(data.id)}
           >
             Show Details
           </span>
@@ -107,80 +88,84 @@ const ViewProjectDetails = () => {
           <FaLongArrowAltLeft className="text-3xl" />
         </button>
       </div>
-      {currentProjectDetails && (
+      {data && (
         <ul className="flex flex-wrap text-left border w-full justify-between rounded-sm">
           {[
             {
               label: "Project Code",
-              value: currentProjectDetails.project_code.toUpperCase(),
+              value: data.project_code.toUpperCase(),
             },
-            { label: "Project Name", value: currentProjectDetails.name },
+            { label: "Project Name", value: data.name },
             {
               label: "Project Type",
-              value: currentProjectDetails.project_type?.name,
+              value: data.project_type,
             },
-            { label: "Client Name", value: currentProjectDetails.clients?.name },
+            { label: "Client Name", value: data.clients },
             {
               label: "Project Manager",
-              value: currentProjectDetails.project_manager?.name,
+              value: data.assigned_to?.name,
             },
             {
               label: "Project Teamlead",
-              value: currentProjectDetails.project_teamlead?.name,
+              value: data.project_assigned_to_teamlead,
             },
             {
               label: "Operation Team",
-              value: currentProjectDetails.operation_team || "N/A",
+              value: data.operation_team || "N/A",
             },
             {
               label: "Finance Team",
-              value: currentProjectDetails.finance_team || "N/A",
+              value: data.finance_team || "N/A",
             },
             {
               label: "Tentative Start Date",
-              value: currentProjectDetails.tentative_start_date?.split("T")[0],
+              value: data.tentative_start_date?.split("T")[0],
             },
             {
               label: "Tentative End Date",
-              value: currentProjectDetails.tentative_end_date?.split("T")[0],
+              value: data.tentative_end_date?.split("T")[0],
             },
-            { label: "Sample", value: currentProjectDetails.sample },
+            { label: "Sample", value: data.sample },
             {
               label: "Achiev Target",
-              value: currentProjectDetails.total_achievement,
+              value: data.total_achievement,
             },
             {
               label: "Total Man Days",
-              value: currentProjectDetails.man_days,
+              value: data.man_days,
               hasDetails: true,
             },
-            { label: "Cost Per Interview", value: currentProjectDetails.cpi },
+            { label: "Cost Per Interview", value: data.cpi },
             {
               label: "Other Cost",
-              value: currentProjectDetails.other_cost || "N/A",
+              value: data.other_cost || "N/A",
             },
-            { label: "Set Up Fee", value: currentProjectDetails.set_up_fee },
+            { label: "Set Up Fee", value: data.set_up_fee },
             {
               label: "Translation Cost",
-              value: currentProjectDetails.transaction_fee || "N/A",
+              value: data.transaction_fee || "N/A",
             },
-            { label: "Status", value: currentProjectDetails.status },
+            { label: "Status", value: data.status },
             {
               label: "Sow",
-              value: currentProjectDetails.upload_document && (
-                <Link
-                  to={BASEURL + currentProjectDetails.upload_document}
-                  target="_blank"
-                >
-                  <img
-                    src={BASEURL + currentProjectDetails.upload_document}
-                    className="w-8 h-8"
-                    alt="sow file"
-                  />
-                  <span className="absolute top-1 right-1 cursor-pointer underline text-blue-700">
-                    View
-                  </span>
-                </Link>
+              value: data.documents.map((d) => d.upload_document) && (
+                <div className="flex">
+                  <Link
+                    to={BASEURL + data.documents.map((d) => d.upload_document)}
+                    target="_blank"
+                  >
+                    <img
+                      src={
+                        BASEURL + data.documents.map((d) => d.upload_document)
+                      }
+                      className="w-8 h-8"
+                      alt="sow file"
+                    />
+                    <span className="absolute top-1 right-1 cursor-pointer underline text-blue-700">
+                      View
+                    </span>
+                  </Link>
+                </div>
               ),
             },
           ].map(({ label, value, hasDetails }, index) =>
@@ -204,7 +189,12 @@ const ViewProjectDetails = () => {
             </h3>
             <ManDaysDetails perDayDetailsData={perDayDetailsData} />
             <div className="absolute top-3 right-1 p-0 m-0 rounded w-8 h-8 flex items-center justify-center text-xl">
-              <button onClick={handleCloseManDaysDetails}>X</button>
+              <button
+                onClick={handleCloseManDaysDetails}
+                className="bg-red-400 hover:bg-red-500 rounded-md text-white p-1"
+              >
+                X
+              </button>
             </div>
           </div>
         </Popup>
