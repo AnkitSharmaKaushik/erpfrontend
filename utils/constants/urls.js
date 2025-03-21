@@ -11,7 +11,7 @@ export const POSTMANDAYSDATA =
   BASEURL + "/api/operation/projects/add/man-days/";
 export const USERLIST = BASEURL + "/api/user/api/users-list/";
 export const PROJECTTYPES = BASEURL + "/api/project/project_type/";
-export const RAISECBR = BASEURL + "/api/operation/project_code/CBR/";
+export const RAISECBR = BASEURL + "/api/finance/cbr-create/";
 export const MANDAYSPERDAY =
   BASEURL + "/api/operation/projects/man-days/perday/";
 export const REGISTER = BASEURL + "/api/user/register/";
@@ -97,3 +97,6 @@ export const GETCOMPANYDETAILS = (id) => {
   return `${BASEURL}/api/user/entity/${id}`;
 };
 export const GETALLCOMPANYNAME = BASEURL + "/api/user/entities";
+export const VIEWCBRDETAILS = (id) =>{
+  return `${BASEURL}/api/finance/project-cbr-data/${id}`
+}

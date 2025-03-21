@@ -76,7 +76,7 @@ const TableActionsButton = ({ record, index }) => {
               allowDepartments={canAcessProjectAction.raiseCBR.department}
               allowedRoles={canAcessProjectAction.raiseCBR.role}
             />
-              <CanUserView
+            <CanUserView
               element={<ViewCbrButton />}
               allowDepartments={canAcessProjectAction.raiseCBR.department}
               allowedRoles={canAcessProjectAction.raiseCBR.role}

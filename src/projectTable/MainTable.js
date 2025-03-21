@@ -17,6 +17,7 @@ import UpdateStatus from "../operation/updateStatus/UpdateStatus";
 import UpdateSow from "../sales/updateSow/UpdateSow";
 import { addPageSize } from "../../utils/slices/projectSlice";
 import RaiseCbr from "../operation/raiseCbr/RaiseCbr";
+import ViewCbr from "../project/view/ViewCbr";
 
 const MainTable = () => {
   const dispatch = useDispatch();
@@ -30,6 +31,7 @@ const MainTable = () => {
     isAddManDays,
     isUploadSow,
     isRaiseCbr,
+    isViewCbr
   } = useSelector((store) => store.dataTable);
   const { page_size, page_number, projects } = useSelector(
     (store) => store.projectData
@@ -175,6 +177,11 @@ const MainTable = () => {
       {isRaiseCbr && (
         <Popup className={"!w-2/3"}>
           <RaiseCbr />
+        </Popup>
+      )}
+      {isViewCbr && (
+        <Popup className={"!w-2/3"}>
+          <ViewCbr />
         </Popup>
       )}
     </div>

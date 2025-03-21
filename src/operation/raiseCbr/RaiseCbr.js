@@ -10,6 +10,10 @@ import {
 } from "../../../utils/slices/dataTableSlice";
 import Popup from "../../Atom/Popup";
 import RaiseCbrMultipleSampleCpi from "./RaiseCbrMultipleSampleCpi";
+import { ProjectData } from "../../../utils/apis/projectData";
+import { setProjects } from "../../../utils/slices/projectSlice";
+import { RaiseCBRPostApi } from "../../fetchApis/projects/raiseCBR/RaiseCbr";
+import SweetAlert from "../../components/SweetAlert";
 // import { RaiseCBRPostApi } from "../../../fetchApis/projects/raiseCBR/RaiseCBRPostApi";
 // import RaisedVpr from "../projectMultipleSampleTable/RaisedVpr";
 // import { RaiseVPRPostApi } from "../../../fetchApis/projects/raiseVPR/RaiseVPRPostApi";
@@ -29,7 +33,7 @@ const RaiseCbr = () => {
 
   const projectSamples = currentProject.project_samples || [];
 
-  const totalNumberOfSurvey = currentProject?.project_samples.reduce(
+  const totalNumberOfSurvey = currentProject?.project_samples?.reduce(
     (acc, item) => {
       return (acc = acc + Number(item.sample));
     },
@@ -78,76 +82,77 @@ const RaiseCbr = () => {
   };
 
   const handleSubmitData = async () => {
-    console.log(sampleData);
-    
+    // console.log(sampleData);
+
+    if (
+      !sampleData.project ||
+      !sampleData.project_code ||
+      !sampleData.project_name
+    ) {
+      SweetAlert({
+        title: "Error",
+        text: "Project, Project Code, and Project Name are required!",
+        icon: "error",
+      });
+      return;
+    }
+    try {
+      const response = await RaiseCBRPostApi(sampleData);
+      if (!response?.status) {
+        SweetAlert({
+          title: "Error",
+          text:
+            response?.ex?.response?.data[0] ||
+            response?.ex?.response?.data?.project,
+          icon: "error",
+        });
+        return;
+      }
+
+      // if (toggleVpr) {
+      //   if (
+      //     !vprData.project ||
+      //     !vprData.vendor_name ||
+      //     !vprData.invoice_amount
+      //   ) {
+      //     SweetAlert({
+      //       title: "Error",
+      //       text: "Vendor Name and Invoice Amount are required for VPR!",
+      //       icon: "error",
+      //     });
+      //     return;
+      //   }
+
+      //   const vprResponse = await RaiseVPRPostApi(vprData);
+      //   if (!vprResponse?.status) {
+      //     SweetAlert({
+      //       title: "Error",
+      //       text: vprResponse?.ex?.response?.data[0] || "Failed to raise VPR!",
+      //       icon: "error",
+      //     });
+      //     return;
+      //   }
+      // }
+      SweetAlert({
+        title: "Success",
+        text: response?.data?.message,
+        icon: "success",
+      });
+      dispatch(toggleRaiseCbr());
+      const projectResponse = await ProjectData(
+        page_number,
+        page_size,
+        activeTab
+      );
+      dispatch(setProjects(projectResponse?.results));
+    } catch (error) {
+      SweetAlert({
+        title: "Error",
+        text: "An unexpected error occurred. Please try again.",
+        icon: "error",
+      });
+    }
   };
-  //     if (
-  //       !sampleData.project ||
-  //       !sampleData.project_code ||
-  //       !sampleData.project_name
-  //     ) {
-  //       SweetAlert({
-  //         title: "Error",
-  //         text: "Project, Project Code, and Project Name are required!",
-  //         icon: "error",
-  //       });
-  //       return;
-  //     }
-  //     try {
-  //       const response = await RaiseCBRPostApi(sampleData);
-  //       if (!response?.status) {
-  //         SweetAlert({
-  //           title: "Error",
-  //           text: response?.ex?.response?.data[0] || "Failed to raise CBR!",
-  //           icon: "error",
-  //         });
-  //         return;
-  //       }
-
-  //       if (toggleVpr) {
-  //         if (
-  //           !vprData.project ||
-  //           !vprData.vendor_name ||
-  //           !vprData.invoice_amount
-  //         ) {
-  //           SweetAlert({
-  //             title: "Error",
-  //             text: "Vendor Name and Invoice Amount are required for VPR!",
-  //             icon: "error",
-  //           });
-  //           return;
-  //         }
-
-  //         const vprResponse = await RaiseVPRPostApi(vprData);
-  //         if (!vprResponse?.status) {
-  //           SweetAlert({
-  //             title: "Error",
-  //             text: vprResponse?.ex?.response?.data[0] || "Failed to raise VPR!",
-  //             icon: "error",
-  //           });
-  //           return;
-  //         }
-  //       }
-  //       SweetAlert({
-  //         title: "Success",
-  //         text: response?.data?.message,
-  //         icon: "success",
-  //       });
-
-  //       const projectData = await ProjectData(
-  //         page_number,
-  //         page_size,
-  //         activeTab
-  //       );
-  //       dispatch(setProjects(projectData?.results));
-  //     } catch (error) {
-  //       SweetAlert({
-  //         title: "Error",
-  //         text: "An unexpected error occurred. Please try again.",
-  //         icon: "error",
-  //       });
-  //     }
-  //   };
 
   const handleSampleClick = () => {
     setSampleData({
@@ -228,7 +233,7 @@ const RaiseCbr = () => {
       </div>
       {isRaiseVpr && (
         <Popup>
-          <RaiseVpr vprData={vprData} setVprData={setVprData} />
+          <RaiseVpr />
         </Popup>
       )}
 

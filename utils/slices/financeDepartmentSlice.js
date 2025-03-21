@@ -8,9 +8,11 @@ const initialState = {
   cbrActiveTabs: "CBR Raised",
   isCreateInvoice: true,
   cbr: {
+    raiseCbrData: {},
+    raiseVbrData: {},
     createInvoice: {
       companyDetails: {},
-      selectedCompanyDetails:{}
+      selectedCompanyDetails: {},
     },
   },
 };
@@ -26,7 +28,7 @@ const financeDepartmentSlice = createSlice({
       state.cbrProjectsData = action.payload;
     },
     addExportData: (state, action) => {
-      state.items = action.payload;
+      state.exportProjects = action.payload;
     },
     setAbrActiveTabs: (state, action) => {
       state.abrActiveTabs = action.payload;
@@ -43,6 +45,20 @@ const financeDepartmentSlice = createSlice({
     addSelectedCompanyDetails: (state, action) => {
       state.cbr.createInvoice.selectedCompanyDetails = action.payload;
     },
+    addRaiseCbrData: (state, action) => {
+      const { name, value } = action.payload; // ✅ Destructure payload
+      state.cbr.raiseCbrData = {
+        ...state.cbr.raiseCbrData,
+        [name]: value,
+      };
+    },
+    addRaiseVbrData: (state, action) => {
+      const { name, value } = action.payload; // ✅ Destructure payload
+      state.cbr.raiseVbrData = {
+        ...state.cbr.raiseVbrData,
+        [name]: value,
+      };
+    },
   },
 });
 
@@ -54,6 +70,8 @@ export const {
   setCbrActiveTabs,
   toggleIsCreateInvoice,
   addCompanyDetails,
-  addSelectedCompanyDetails
+  addSelectedCompanyDetails,
+  addRaiseCbrData,
+  addRaiseVbrData,
 } = financeDepartmentSlice.actions;
 export default financeDepartmentSlice.reducer;

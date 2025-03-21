@@ -3,12 +3,12 @@ import LableAndInput from "../../Molecules/LableAndInput";
 import Popup from "../../Atom/Popup";
 import { RaiseVprInputFields } from "./RaiseVprInputFields";
 
-const RaiseVpr = ({ vprData, setVprData }) => {
+const RaiseVpr = () => {
   // { viewRecord, vprData, setVprData, currentProject }
-  const [isAddOtherCost, setIsAddOtherCost] = useState(false);
+  // const [isAddOtherCost, setIsAddOtherCost] = useState(false);
 
   const handleAddOtherCost = () => {
-    setIsAddOtherCost(!isAddOtherCost);
+    // setIsAddOtherCost(true);
   };
 
   return (
@@ -17,13 +17,13 @@ const RaiseVpr = ({ vprData, setVprData }) => {
 
       {/* Grid Layout */}
       <div className="grid grid-cols-3 gap-4 border shadow-md rounded-md p-2">
-        <RaiseVprInputFields vprData={vprData} setVprData={setVprData} />
+        <RaiseVprInputFields />
       </div>
-      {isAddOtherCost && (
+      {/* {isAddOtherCost && ( */}
         <div className="grid grid-cols-3 gap-4 border shadow-md rounded-md p-2 mt-2">
-          <RaiseVprInputFields vprData={vprData} setVprData={setVprData} />
+          <RaiseVprInputFields />
         </div>
-      )}
+      {/* )} */}
       <button
         className="text-xs mt-2 p-1 text-white bg-blue-500 hover:bg-blue-600 rounded-md flex justify-start"
         onClick={handleAddOtherCost}

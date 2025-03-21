@@ -6,7 +6,7 @@ const initialState = {
   isAddManDays: false,
   isView: false,
   selectedRecord: null,
-  openDropdownIndex: -1, 
+  openDropdownIndex: -1,
   isViewOptionIndex: null,
   isViewOptionOpen: false,
   selectedIndex: null,
@@ -20,9 +20,9 @@ const initialState = {
   toggledClearRows: false,
   showAddlnFee: false,
   addlnFeeList: [],
-  isRaiseCbr:false,
-  isRaiseVpr:false,
-  
+  isRaiseCbr: false,
+  isRaiseVpr: false,
+  isViewCbr: false,
 };
 
 const dataTableSlice = createSlice({
@@ -62,7 +62,7 @@ const dataTableSlice = createSlice({
     toggleIsDrawerOpen(state) {
       state.isDrawerOpen = !state.isDrawerOpen;
     },
-    toggleIsMultiEdit(state,action) {
+    toggleIsMultiEdit(state, action) {
       state.isMultiEdit = action.payload;
     },
     toggleIsUploadSow(state) {
@@ -92,6 +92,9 @@ const dataTableSlice = createSlice({
     toggleRaiseVpr(state) {
       state.isRaiseVpr = !state.isRaiseVpr;
     },
+    toggleViewCbr(state) {
+      state.isViewCbr = !state.isViewCbr;
+    },
   },
 });
 
@@ -116,7 +119,8 @@ export const {
   toggleShowAddlnFee,
   setAddlnFee,
   toggleRaiseCbr,
-  toggleRaiseVpr
+  toggleRaiseVpr,
+  toggleViewCbr,
 } = dataTableSlice.actions;
 
 export default dataTableSlice.reducer;

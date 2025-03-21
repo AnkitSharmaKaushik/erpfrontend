@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Button from "../Atom/Button";
 import { patchWithAuth, postWithAuth } from "../provider/helper/axios";
@@ -24,24 +23,13 @@ import {
 
 const OpenNotification = ({ notification_btn_ref }) => {
   const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
-  const dispatch = useDispatch();
   const { isViewMultipleSampleCpiRecords } = useSelector(
     (store) => store.addMultipleSampleCpi
   );
   const { notificationList } = useSelector((store) => store.notification);
-  const { page_number, page_size, activeTab, projects } = useSelector(
-    (store) => store.projectData
-  );
-  const token = localStorage.getItem("token");
-
-  const [projectData, setProjectData] = useState([]);
-
-  useEffect(() => {
-    const fetchProjectData = () => {
-      setProjectData(projects);
-    };
-    fetchProjectData();
-  }, [token]);
+  const { page_number, page_size, activeTab, projectsWithoutAnyFilter } =
+  useSelector((store) => store.projectData);
+  const dispatch = useDispatch();
 
   const handleAccept = async (id) => {
     const response = await postWithAuth(ACCEPTPROJECTREQUEST(id), {
@@ -82,14 +70,17 @@ const OpenNotification = ({ notification_btn_ref }) => {
     dispatch(toggleViewMultipleCpiSample(true));
   };
 
-  const getOldProjectData = projectData?.find((item) =>
+  const getOldProjectData = projectsWithoutAnyFilter?.find((item) =>
     notificationList?.some(
       (notificationItem) => notificationItem?.project?.id === item?.id
     )
   );
 
   const totalNewProjectSampleCount = notificationList?.reduce((acc, item) => {
-    return (acc = acc + Number(item?.pending_changes?.sample)) || 0;
+    if (Array.isArray(item?.pending_changes)) {
+      return (acc = acc + Number(item?.pending_changes?.sample)) || 0;
+    }
+    return acc + Number(item?.pending_changes?.sample || 0);
   }, 0);
 
   const handleReject = async (id) => {
@@ -185,7 +176,7 @@ const OpenNotification = ({ notification_btn_ref }) => {
                   </span>
                 </Tooltip>
               ) : (
-                getOldProjectData?.sample
+                totalNewProjectSampleCount
               )}
             </div>
             <div className="border-b-black border">
