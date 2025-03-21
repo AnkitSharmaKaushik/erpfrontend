@@ -6,8 +6,8 @@
 // import { FaRegUserCircle } from "react-icons/fa";
 // import {
 //   UPDATE_PROFILE,
-//   USERLIST,
-//   USERSTATUS,
+//   USER_LIST,
+//   USER_STATUS,
 // } from "../../utils/constants/urls";
 // import { customStyles } from "../../utils/tableData/DataTablesData";
 
@@ -19,7 +19,7 @@
 
 //   useEffect(() => {
 //     const fetchUsers = async () => {
-//       const response = await getWithAuth(USERLIST);
+//       const response = await getWithAuth(USER_LIST);
 //       setUserListDetails(response?.data?.users || []);
 //     };
 //     fetchUsers();
@@ -54,7 +54,7 @@
 //     }
 //   };
 //   const deleteUser = async () => {
-//     const response = postWithAuth(USERSTATUS, userStatus);
+//     const response = postWithAuth(USER_STATUS, userStatus);
 //     const json = await response;
 //   };
 

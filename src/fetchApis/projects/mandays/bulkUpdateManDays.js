@@ -1,8 +1,8 @@
-// import {  POSTMANDAYSDATA } from "../../../../../utils/Apis"
+// import {  POST_MAN_DAYS_DATA } from "../../../../../utils/Apis"
 
 // export const BulkUpdateManDaysData = async(data) =>{
 //     try{
-//         const response =  await fetch(POSTMANDAYSDATA,{
+//         const response =  await fetch(POST_MAN_DAYS_DATA,{
 //             method:'POST',
 //             headers : {
 //                 'Content-Type':'Application/Json',

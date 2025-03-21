@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { getWithAuth } from "../provider/helper/axios";
-import { USERLIST } from "../../utils/constants/urls";
+import { USER_LIST } from "../../utils/constants/urls";
 
 const ManagementPanel = () => {
   const [userList, setUserList] = useState([]);
@@ -16,7 +16,7 @@ const ManagementPanel = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getWithAuth(USERLIST);
+        const response = await getWithAuth(USER_LIST);
         const users = response.data.users.map((user) => ({
           id: user.id,
           username: user.username,

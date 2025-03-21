@@ -1,9 +1,9 @@
-import { LOGINPOSTAPIS } from "../../../utils/constants/urls";
+import { LOGIN_APIS } from "../../../utils/constants/urls";
 import SweetAlert from "../../components/SweetAlert";
 
 export const PostLoginData = async (data) => {
   try {
-    const response = await fetch(LOGINPOSTAPIS, {
+    const response = await fetch(LOGIN_APIS, {
       method: "POST",
       headers: {
         "Content-Type": "Application/Json",

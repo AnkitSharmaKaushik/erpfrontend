@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
-import { USERROLE } from "../../utils/urls";
+import { USER_ROLE } from "../../utils/urls";
 import { getWithAuth } from "../provider/helper/axios";
 import { ManWorkPerDays } from "../fetchApis/projects/perDayManWork/GetDaysManWork";
 // import { isTeamLead } from "../config/Role";
@@ -30,7 +30,7 @@ const RPEWeek = ({ projectData }) => {
   const userData = useSelector((store) => store.userData.users);
   useEffect(() => {
     const fetchUserRole = async () => {
-      // const userRole = await getWithAuth(USERROLE);
+      // const userRole = await getWithAuth(USER_ROLE);
       setAllUserList(userData);
       const tlList = userData.filter((item) => item.role.name === isTeamLeadRole);
       setTlListArray(tlList.map((item) => item.user_role));

@@ -13,10 +13,10 @@ import { useDispatch, useSelector } from "react-redux";
 // import {
 //   ADVANCEBILLING,
 //   FINANCEPROJECT,
-//   GENERATEINVOICE,
-//   GETALLCOMPANYNAME,
+//   GENERATE_INVOICE,
+//   GET_ALL_COMPANY_NAME,
 //   GETCBR,
-//   GETCOMPANYDETAILS,
+//   GET_COMPANY_DETAILS,
 // } from "../../../../utils/constants/urls";
 // import { addFinanceProject } from "../../../../utils/slices/ProjectSlice";
 // import { cbrProjectData } from "../../../../utils/apis/cbrProjectData";

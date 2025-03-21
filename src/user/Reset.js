@@ -4,7 +4,7 @@
 // import Button from "../components/Button";
 // import { useNavigate } from "react-router-dom";
 // import SweetAlert from "../components/SweetAlert";
-// import { RESETPASSWORD } from "../../utils/constants/urls";
+// import { RESET_PASSWORD } from "../../utils/constants/urls";
 
 // const Reset = () => {
 //   const [email, setEmail] = useState({
@@ -14,7 +14,7 @@
 //   const navigate = useNavigate();
 //   const forgotPassword = async () => {
 //     setLoading(true);
-//     const response = await fetch(RESETPASSWORD, {
+//     const response = await fetch(RESET_PASSWORD, {
 //       method: "POST",
 //       headers: {
 //         "Content-Type": "Application/Json",
@@ -103,7 +103,7 @@ import Input from "../Atom/InputField";
 import Button from "../Atom/Button";
 import { useNavigate } from "react-router-dom";
 import SweetAlert from "../components/SweetAlert";
-import { RESETPASSWORD } from "../../utils/constants/urls";
+import { RESET_PASSWORD } from "../../utils/constants/urls";
 
 const Reset = () => {
   const [email, setEmail] = useState({
@@ -114,7 +114,7 @@ const Reset = () => {
 
   const forgotPassword = async () => {
     setLoading(true);
-    const response = await fetch(RESETPASSWORD, {
+    const response = await fetch(RESET_PASSWORD, {
       method: "POST",
       headers: {
         "Content-Type": "Application/Json",

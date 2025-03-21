@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getWithAuth } from "../../src/provider/helper/axios";
 import { useDispatch } from "react-redux";
-import { USERROLE } from "../constants/urls";
+import { USER_ROLE } from "../constants/urls";
 import { setUsers } from "../slices/userSlice";
 
 const useUserData = () => {
@@ -9,7 +9,7 @@ const useUserData = () => {
   const [userData, setUserData] = useState([]);
 
   const getUserData = async () => { 
-    const data = await getWithAuth(USERROLE);
+    const data = await getWithAuth(USER_ROLE);
     const response = data?.data;
     response.length > 0 && dispatch(setUsers(response));
     setUserData(response);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LableAndInput from "../../Molecules/LableAndInput";
 import SweetAlert from "../../components/SweetAlert";
-import { PROJECTSOWUPDATE } from "../../../utils/constants/urls";
+import { PROJECT_SOW_UPDATE } from "../../../utils/constants/urls";
 import { ProjectData } from "../../../utils/apis/projectData";
 import { setProjects } from "../../../utils/slices/projectSlice";
 import {
@@ -74,7 +74,7 @@ const UpdateSow = () => {
           ? patchWithAuthFiles
           : postWithAuthFiles;
       const response = await methodRequired(
-        PROJECTSOWUPDATE(selectedRecord?.id),
+        PROJECT_SOW_UPDATE(selectedRecord?.id),
         formData
       );
       if (response.status == true) {

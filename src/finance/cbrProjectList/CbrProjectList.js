@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import FilterProject from "../../project/filter/FilterProject";
 import ProjectNameAndFilter from "../../project/filter/ProjectNameAndFilter";
 import { useDispatch } from "react-redux";
-import { CBRPROJECTLIST } from "../../../utils/constants/urls";
+import { CBR_PROJECT_LIST } from "../../../utils/constants/urls";
 import { getWithAuth } from "../../provider/helper/axios";
 import CBRStatusTabs from "../statusTabs/CBRStatusTabs";
 import CbrTable from "./table/CbrTable";
@@ -12,7 +12,7 @@ const CbrProjectList = () => {
   const dispatch = useDispatch();
 
   const cbrProjectList = async () => {
-    const response = await getWithAuth(CBRPROJECTLIST);
+    const response = await getWithAuth(CBR_PROJECT_LIST);
     const data = await response?.data;
     dispatch(setCbrProjects(data));
   };

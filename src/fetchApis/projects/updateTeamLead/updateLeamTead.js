@@ -1,10 +1,10 @@
-import { UPDATETLASSIGNMENT } from "../../../../utils/constants/urls.js";
+import { UPDATE_TL_ASSIGNMENT } from "../../../../utils/constants/urls.js";
 import SweetAlert from "../../../components/SweetAlert.js";
 import { postWithAuth, putWithAuth } from "../../../provider/helper/axios.js";
 
 export const UpdateTeamLead = async (data) => {
   try {
-    const response = await postWithAuth(UPDATETLASSIGNMENT, data, {
+    const response = await postWithAuth(UPDATE_TL_ASSIGNMENT, data, {
       method: "PUT",
       body: JSON.stringify(data),
     });

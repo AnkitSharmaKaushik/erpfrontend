@@ -4,7 +4,7 @@ import FilterProject from "../../project/filter/FilterProject";
 import ABRStatusTabs from "../statusTabs/ABRStatusTabs";
 import ProjectNameAndFilter from "../../project/filter/ProjectNameAndFilter";
 import { useDispatch } from "react-redux";
-import { ABRPROJECTLIST } from "../../../utils/constants/urls";
+import { ABR_PROJECT_LIST } from "../../../utils/constants/urls";
 import { getWithAuth } from "../../provider/helper/axios";
 import { setAbrProjects } from "../../../utils/slices/financeDepartmentSlice";
 
@@ -12,7 +12,7 @@ const AbrProjectList = () => {
   const dispatch = useDispatch();
 
   const abrProjectList = async () => {
-    const response = await getWithAuth(ABRPROJECTLIST);
+    const response = await getWithAuth(ABR_PROJECT_LIST);
     const data = await response?.data;
     dispatch(setAbrProjects(data));
   };

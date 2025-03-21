@@ -1,10 +1,10 @@
-import { PROJECTENTRYAPIS } from "../../../../utils/constants/urls.js";
+import { PROJECT_ENTRY_APIS } from "../../../../utils/constants/urls.js";
 import SweetAlert from "../../../components/SweetAlert.js";
 import { postWithAuthForUpload } from "../../../provider/helper/axios.js";
 
 export const PostFormData = async (data) => {
   try {
-    return await postWithAuthForUpload(PROJECTENTRYAPIS, data, {
+    return await postWithAuthForUpload(PROJECT_ENTRY_APIS, data, {
       method: "POST",
       body: JSON.stringify(data),
     });

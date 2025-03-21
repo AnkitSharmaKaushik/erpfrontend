@@ -2,8 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Button from "../Atom/Button";
 import { patchWithAuth, postWithAuth } from "../provider/helper/axios";
 import {
-  ACCEPTPROJECTREQUEST,
-  REJECTPROJECTREQUEST,
+  ACCEPT_PROJECT_REQUEST,
+  REJECT_PROJECT_REQUEST,
 } from "../../utils/constants/urls";
 import SweetAlert from "../components/SweetAlert";
 import Tooltip from "../components/Tooltip";
@@ -32,7 +32,7 @@ const OpenNotification = ({ notification_btn_ref }) => {
   const dispatch = useDispatch();
 
   const handleAccept = async (id) => {
-    const response = await postWithAuth(ACCEPTPROJECTREQUEST(id), {
+    const response = await postWithAuth(ACCEPT_PROJECT_REQUEST(id), {
       is_approved: "True",
     });
     if (response?.status == true) {
@@ -84,7 +84,7 @@ const OpenNotification = ({ notification_btn_ref }) => {
   }, 0);
 
   const handleReject = async (id) => {
-    const response = await patchWithAuth(REJECTPROJECTREQUEST(id), {
+    const response = await patchWithAuth(REJECT_PROJECT_REQUEST(id), {
       is_rejected: "False",
     });
     if (response?.status == true) {

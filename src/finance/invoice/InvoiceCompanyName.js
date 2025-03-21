@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { GETALLCOMPANYNAME } from "../../../utils/constants/urls";
+import { GET_ALL_COMPANY_NAME } from "../../../utils/constants/urls";
 import { getWithAuth } from "../../provider/helper/axios";
 import {
   addCompanyDetails,
@@ -21,7 +21,7 @@ const InvoiceCompanyName = () => {
   };
 
   const getCOmpanyDropdownDetails = async () => {
-    const companyName = await getWithAuth(GETALLCOMPANYNAME);
+    const companyName = await getWithAuth(GET_ALL_COMPANY_NAME);
     dispatch(addCompanyDetails(companyName.data.data));
   };
 

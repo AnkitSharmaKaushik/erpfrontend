@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IoNotifications } from "react-icons/io5";
 import { getWithAuth } from "../provider/helper/axios";
-import { EDITPROJECTREQUEST } from "../../utils/constants/urls";
+import { EDIT_PROJECT_REQUEST } from "../../utils/constants/urls";
 import { useSelector, useDispatch } from "react-redux";
 import { useHandleOutsideClick } from "../../utils/hooks/useHandleOutSideClick";
 import {
@@ -41,7 +41,7 @@ const Notification = () => {
   useHandleOutsideClick(notification_btn_ref, handleClose);
 
   const handleViewNotification = async (id) => {
-    const response = await getWithAuth(EDITPROJECTREQUEST(id));
+    const response = await getWithAuth(EDIT_PROJECT_REQUEST(id));
     if (response.status == true) {
       dispatch(addNotification(response?.data));
     }

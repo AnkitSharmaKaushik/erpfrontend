@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LableAndInput from "../../Molecules/LableAndInput";
 import { patchWithAuth } from "../../provider/helper/axios";
-import { EDITPROJECTREQUEST } from "../../../utils/constants/urls";
+import { EDIT_PROJECT_REQUEST } from "../../../utils/constants/urls";
 import Loader from "../../Atom/Loader";
 import SweetAlert from "../../components/SweetAlert";
 import Popup from "../../Atom/Popup";
@@ -91,7 +91,7 @@ const ProjectSampleEditRequest = () => {
   const PostUpdateEditData = async (data) => {
     setLoader(true);
     const response = await patchWithAuth(
-      EDITPROJECTREQUEST(selectedRecord?.id),
+      EDIT_PROJECT_REQUEST(selectedRecord?.id),
       data
     );
     if (response.status === true) {

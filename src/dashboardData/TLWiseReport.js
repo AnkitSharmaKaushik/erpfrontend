@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { getWithAuth } from "../provider/helper/axios";
-import { ALLWORKANDMENDAYS } from "../../utils/constants/urls";
+import { ALL_WORK_AND_MEN_DAYS } from "../../utils/constants/urls";
 import CanvasJSReact from "@canvasjs/react-charts";
 import { TiFilter } from "react-icons/ti";
 import { LuDownload } from "react-icons/lu";
@@ -74,7 +74,7 @@ const TLWiseReport = ({
 
   useEffect(() => {
     const TotalMenDays = async () => {
-      const response = await getWithAuth(ALLWORKANDMENDAYS);
+      const response = await getWithAuth(ALL_WORK_AND_MEN_DAYS);
       const data = response?.data;
       setTotalWork(data);
     };

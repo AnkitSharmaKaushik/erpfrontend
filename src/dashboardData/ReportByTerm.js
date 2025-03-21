@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { getWithAuth } from "../provider/helper/axios";
-import { MANDAYSLIST } from "../../utils/urls";
+import { MANDAYS_LIST } from "../../utils/urls";
 
 const ReportByTerm = ({ setSelectedTerm }) => {
   useEffect(() => {
     const getManDays = async () => {
-      const response = await getWithAuth(MANDAYSLIST);
+      const response = await getWithAuth(MANDAYS_LIST);
     };
     getManDays();
   }, []);

@@ -14,9 +14,9 @@ import { useDispatch, useSelector } from "react-redux";
 //   ADVANCEBILLING,
 //   FINANCEPROJECT,
 //   GENERATEINVOICE,
-//   GETALLCOMPANYNAME,
+//   GET_ALL_COMPANY_NAME,
 //   GETCBR,
-//   GETCOMPANYDETAILS,
+//   GET_COMPANY_DETAILS,
 // } from "../../../../utils/constants/urls";
 
 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CanvasJSReact from "@canvasjs/react-charts";
 import { getWithAuth } from "../provider/helper/axios";
-import { ALLWORKANDMENDAYS } from "../../utils/constants/urls";
+import { ALL_WORK_AND_MEN_DAYS } from "../../utils/constants/urls";
 
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
@@ -35,7 +35,7 @@ const PerdayReport = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await getWithAuth(ALLWORKANDMENDAYS);
+      const response = await getWithAuth(ALL_WORK_AND_MEN_DAYS);
       const projectData = response.data;
 
       const rpeDataPoints = calculateRpePerDay(projectData);

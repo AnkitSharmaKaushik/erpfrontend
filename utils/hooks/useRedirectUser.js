@@ -1,10 +1,10 @@
-import { USERLIST } from "../constants/urls";
+import { USER_LIST } from "../constants/urls";
 
 const role = localStorage.getItem("role");
 
 export const useRedirectUser = async (navigate) => {  
   try {
-    const userList = await fetch(USERLIST);
+    const userList = await fetch(USER_LIST);
     const userListJson = await userList.json();
     let email = localStorage.getItem("user");
     const userData = userListJson.users;
