@@ -22,6 +22,7 @@ const initialState = {
   addlnFeeList: [],
   isRaiseCbr: false,
   isRaiseVpr: false,
+  isVprHasData:false,
   isViewCbr: false,
 };
 
@@ -92,6 +93,9 @@ const dataTableSlice = createSlice({
     toggleRaiseVpr(state) {
       state.isRaiseVpr = !state.isRaiseVpr;
     },
+    toggleIsVprHasData(state,action) {
+      state.isVprHasData = action.payload;
+    },
     toggleViewCbr(state) {
       state.isViewCbr = !state.isViewCbr;
     },
@@ -120,6 +124,7 @@ export const {
   setAddlnFee,
   toggleRaiseCbr,
   toggleRaiseVpr,
+  toggleIsVprHasData,
   toggleViewCbr,
 } = dataTableSlice.actions;
 

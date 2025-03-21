@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleRaiseVpr } from "../../../utils/slices/dataTableSlice";
+import { toggleIsVprHasData, toggleRaiseVpr } from "../../../utils/slices/dataTableSlice";
 
 export const RaiseCbrInputFields = ({ sampleData, setSampleData }) => {
   const { projects, page_number, page_size, activeTab } = useSelector(
     (store) => store.projectData
   );
-  const { selectedRecord, isRaiseVpr } = useSelector(
+  const { selectedRecord, isRaiseVpr,isVprHasData } = useSelector(
     (store) => store.dataTable
   );
   const dispatch = useDispatch();
@@ -119,7 +119,8 @@ export const RaiseCbrInputFields = ({ sampleData, setSampleData }) => {
     {
       labelName: "Raised VPR",
       isCheckbox: true,
-      inputChange: () => dispatch(toggleRaiseVpr()),
+      isCheck:isVprHasData,
+      inputChange: () => {dispatch(toggleRaiseVpr());dispatch(toggleIsVprHasData(true))},
     },
   ];
 };

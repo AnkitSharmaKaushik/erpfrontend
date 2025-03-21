@@ -180,7 +180,7 @@ const MainTable = () => {
         </Popup>
       )}
       {isViewCbr && (
-        <Popup className={"!w-2/3"}>
+        <Popup>
           <ViewCbr />
         </Popup>
       )}

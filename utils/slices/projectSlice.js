@@ -21,8 +21,7 @@ const initialState = {
   page_number: 1,
   page_size: 30,
   totalRows: null,
-  // activeTab: "all",
-  activeTab: "Completed",
+  activeTab: "all",
   selectedAssignedTeamLead: [],
 };
 

@@ -1,98 +1,118 @@
-import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { viewCbrAPI } from "../../../utils/apis/viewCbr";
+import { toggleViewCbr } from "../../../utils/slices/dataTableSlice";
 
 const ViewCbr = () => {
   const { selectedRecord } = useSelector((store) => store.dataTable);
-  const [viewCbrData, setViewCbrData] = useState();
-  const viewCbr = async () => {
-    const response = await viewCbrAPI(selectedRecord.id);
-    setViewCbrData(response?.data);
-  };
+  const dispatch = useDispatch();
+
+  const [viewCbrData, setViewCbrData] = useState([]);
+
   useEffect(() => {
-    viewCbr();
-  }, []);
+    const fetchViewCbr = async () => {
+      if (!selectedRecord?.id) return;
+      try {
+        const response = await viewCbrAPI(selectedRecord.id);
+        setViewCbrData(response?.data || []);
+      } catch (error) {
+        console.error("Error fetching CBR data:", error);
+      }
+    };
+    fetchViewCbr();
+  }, [selectedRecord]);
 
-  return viewCbrData?.map((data, ind) => {
-    return (
-    <div key={ind} className="p-6 bg-white shadow-lg rounded-2xl max-w-4xl mx-auto">
-      <h2 className="text-2xl font-semibold mb-6">Billing Details</h2>
+  const handleCloseView = () => dispatch(toggleViewCbr());
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <strong>Project Name:</strong> {data?.project_name || "N/A"}
-        </div>
-        <div>
-          <strong>Project Code:</strong> {data?.project_code || "N/A"}
-        </div>
-        <div>
-          <strong>Client Name:</strong> {data?.client_name || "N/A"}
-        </div>
-        <div>
-          <strong>Contact Person:</strong>{" "}
-          {data?.client_contact_person || "N/A"}
-        </div>
-        <div>
-          <strong>Email:</strong> {data?.client_email_address || "N/A"}
-        </div>
-        <div>
-          <strong>PO Number:</strong> {data?.client_purchase_order_no || "N/A"}
-        </div>
+  const tableRows = useMemo(
+    () => [
+      { label: "Name of Client", key: "client" },
+      { label: "Project Name", key: "project_name" },
+      {
+        label: "Client Purchase order no. (if any)",
+        key: "client_purchase_order_no",
+      },
+      { label: "Project Code", key: "project_code" },
+      { label: "Client : Contact Person", key: "client_contact_person" },
+      { label: "Email Address", key: "client_email_address" },
+      { label: "Cc : Email IDs (if any)", key: "cc_email_ids" },
+      {
+        label: "# of Surveys as per Initial SOW",
+        key: "number_of_surveys_initial_sow",
+        default: "0",
+      },
+      {
+        label: "# Addnl Surveys as per client confirmation (if any)",
+        key: "number_of_additional_surveys",
+        default: "0",
+      },
+      {
+        label: "# of Total Surveys to be billed to client",
+        key: "total_surveys_to_be_billed",
+        default: "0",
+      },
+      {
+        label: "Other Specific billing instructions (if any)",
+        key: "other_billing_instruction",
+      },
+      { label: "Sales Owner", key: "sales_owner" },
+      { label: "Name of Project Manager", key: "project_manager" },
+    ],
+    []
+  );
 
-        <div>
-          <strong>Advance Billing Raised:</strong>{" "}
-          {data?.advanced_billing_raised ? "Yes" : "No"}
-        </div>
-        <div>
-          <strong>CBR Raised Status:</strong>{" "}
-          {data?.cbr_raised_status ? "Yes" : "No"}
-        </div>
-        <div>
-          <strong>Minimum Fee:</strong> ₹{data?.minimum_fee || "0.00"}
-        </div>
+  const isObject = (value) => typeof value === "object" && value !== null;
 
-        <div>
-          <strong>Surveys (Initial SOW):</strong>{" "}
-          {data?.number_of_surveys_initial_sow}
-        </div>
-        <div>
-          <strong>Total Surveys to be Billed:</strong>{" "}
-          {data?.total_surveys_to_be_billed}
-        </div>
-        <div>
-          <strong>Additional Surveys:</strong>{" "}
-          {data?.number_of_additional_surveys}
-        </div>
+  if (!viewCbrData.length) return null;
 
-        <div>
-          <strong>Request Date:</strong>{" "}
-          {new Date(data?.request_date).toLocaleDateString()}
-        </div>
-        <div>
-          <strong>Requested By:</strong> {data?.requested_by?.name || "N/A"}
-        </div>
+  return (
+    <div className="p-6 bg-white relative">
+      <h2 className="text-xl font-bold mb-4">
+        Unimrkt/PR/CBR/{viewCbrData[0]?.id || "N/A"}
+      </h2>
 
-        <div className="col-span-2">
-          <strong>Remarks:</strong> {data?.remarks || "N/A"}
-        </div>
-        <div className="col-span-2">
-          <strong>Other Billing Instructions:</strong>{" "}
-          {data?.other_billing_instruction || "N/A"}
-        </div>
-      </div>
+      <h3 className="text-lg font-semibold primary_color text-white p-1">
+        Client Billing Requisition
+      </h3>
+      <h3 className="text-lg font-semibold primary_color text-white p-1 border-t">
+        Particulars
+      </h3>
 
-      {data?.final_samples && (
-        <div className="mt-6">
-          <h3 className="text-xl font-semibold mb-3">Final Samples</h3>
-          <ul className="list-disc list-inside">
-            {data.final_samples.map((sample, index) => (
-              <li key={index}>{JSON.stringify(sample)}</li>
-            ))}
-          </ul>
+      {viewCbrData.map((data, ind) => (
+        <div key={ind} className="mb-6">
+          <table className="w-full border-collapse border border-gray-300">
+            <tbody>
+              {tableRows.map(
+                ({ label, key, default: defaultValue = "N/A" }) => (
+                  console.log(data?.[key]),
+                  (
+                    <tr key={key}>
+                      <td className="primary_color w-1/2 text-white p-1 border text-left">
+                        {label}
+                      </td>
+                      <td className="p-1 text-left w-1/2 border pl-2">
+                        {isObject(data?.[key])
+                          ? data?.[key].name
+                          : data?.[key] ?? defaultValue}
+                        {/* {data?.[key] ?? defaultValue} */}
+                      </td>
+                    </tr>
+                  )
+                )
+              )}
+            </tbody>
+          </table>
         </div>
-      )}
-    </div>)
-  });
+      ))}
+
+      <button
+        onClick={handleCloseView}
+        className="absolute top-0 right-0 bg-red-400 p-1 rounded-md text-white hover:bg-red-500"
+      >
+        X
+      </button>
+    </div>
+  );
 };
 
 export default ViewCbr;

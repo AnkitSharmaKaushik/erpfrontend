@@ -5,6 +5,7 @@ import { RaiseCbrInputFields } from "./RaiseCbrInputFields";
 import Label from "../../Atom/Label";
 import RaiseVpr from "../raiseVpr/RaiseVpr";
 import {
+  toggleIsVprHasData,
   toggleRaiseCbr,
   toggleRaiseVpr,
 } from "../../../utils/slices/dataTableSlice";
@@ -14,6 +15,7 @@ import { ProjectData } from "../../../utils/apis/projectData";
 import { setProjects } from "../../../utils/slices/projectSlice";
 import { RaiseCBRPostApi } from "../../fetchApis/projects/raiseCBR/RaiseCbr";
 import SweetAlert from "../../components/SweetAlert";
+import { RaiseVPRPostApi } from "../../fetchApis/projects/raiseVPR/RaiseVPRPostApi";
 // import { RaiseCBRPostApi } from "../../../fetchApis/projects/raiseCBR/RaiseCBRPostApi";
 // import RaisedVpr from "../projectMultipleSampleTable/RaisedVpr";
 // import { RaiseVPRPostApi } from "../../../fetchApis/projects/raiseVPR/RaiseVPRPostApi";
@@ -22,7 +24,7 @@ const RaiseCbr = () => {
   const { projects, page_number, page_size, activeTab } = useSelector(
     (store) => store.projectData
   );
-  const { selectedRecord, isRaiseVpr } = useSelector(
+  const { selectedRecord, isRaiseVpr, isVprHasData } = useSelector(
     (store) => store.dataTable
   );
   const dispatch = useDispatch();
@@ -82,8 +84,6 @@ const RaiseCbr = () => {
   };
 
   const handleSubmitData = async () => {
-    // console.log(sampleData);
-
     if (
       !sampleData.project ||
       !sampleData.project_code ||
@@ -96,49 +96,56 @@ const RaiseCbr = () => {
       });
       return;
     }
+
     try {
+      // Submit Main Data
       const response = await RaiseCBRPostApi(sampleData);
       if (!response?.status) {
         SweetAlert({
           title: "Error",
           text:
-            response?.ex?.response?.data[0] ||
-            response?.ex?.response?.data?.project,
+            response?.ex?.response?.data?.[0] ||
+            response?.ex?.response?.data?.project ||
+            "Failed to submit the main data.",
           icon: "error",
         });
         return;
       }
 
-      // if (toggleVpr) {
-      //   if (
-      //     !vprData.project ||
-      //     !vprData.vendor_name ||
-      //     !vprData.invoice_amount
-      //   ) {
-      //     SweetAlert({
-      //       title: "Error",
-      //       text: "Vendor Name and Invoice Amount are required for VPR!",
-      //       icon: "error",
-      //     });
-      //     return;
-      //   }
+      // Handle VPR Data if Available
+      if (isVprHasData && Array.isArray(vprData) && vprData.length > 0) {
+        for (const vpr of vprData) {
+          if (!vpr.project || !vpr.vendor_name || !vpr.invoice_amount) {
+            SweetAlert({
+              title: "Error",
+              text: "Vendor Name and Invoice Amount are required for VPR!",
+              icon: "error",
+            });
+            return;
+          }
 
-      //   const vprResponse = await RaiseVPRPostApi(vprData);
-      //   if (!vprResponse?.status) {
-      //     SweetAlert({
-      //       title: "Error",
-      //       text: vprResponse?.ex?.response?.data[0] || "Failed to raise VPR!",
-      //       icon: "error",
-      //     });
-      //     return;
-      //   }
-      // }
+          const vprResponse = await RaiseVPRPostApi(vpr);
+          if (!vprResponse?.status) {
+            SweetAlert({
+              title: "Error",
+              text:
+                vprResponse?.ex?.response?.data?.[0] || "Failed to raise VPR!",
+              icon: "error",
+            });
+            return;
+          }
+        }
+      }
+
+      // Success Message and Refresh
       SweetAlert({
         title: "Success",
-        text: response?.data?.message,
+        text: response?.data?.message || "Data submitted successfully!",
         icon: "success",
       });
+
       dispatch(toggleRaiseCbr());
+      dispatch(toggleIsVprHasData(false));
       const projectResponse = await ProjectData(
         page_number,
         page_size,
@@ -168,13 +175,13 @@ const RaiseCbr = () => {
   };
 
   const handlePopupSubmit = () => {
-    console.log(sampleData);
-
     setSamplePopupOpen(false);
   };
+
   const handlePopupCancel = () => {
     setSamplePopupOpen(false);
   };
+
   const handleSampleChange = (index, field, value) => {
     const updatedSamples = [...sampleData.samples];
     updatedSamples[index][field] = value;
@@ -195,6 +202,7 @@ const RaiseCbr = () => {
                     type="checkbox"
                     onChange={field.inputChange}
                     className="h-5 w-5"
+                    checked={field.isCheck}
                   />
                 </div>
               ) : field.isCustomComponent ? (
@@ -232,9 +240,9 @@ const RaiseCbr = () => {
         )}
       </div>
       {isRaiseVpr && (
-        <Popup>
-          <RaiseVpr />
-        </Popup>
+        <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 overflow-y-scroll z-30 bg-gray-200 border w-10/12 shadow-md max-h-[550px] h-full">
+          <RaiseVpr vprData={vprData} setVprData={setVprData} />
+        </div>
       )}
 
       <div className="flex justify-center pt-10 gap-4">
