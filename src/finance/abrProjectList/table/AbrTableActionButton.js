@@ -16,7 +16,7 @@ import {
 } from "../../../../utils/slices/dataTableSlice";
 import GenerateInvoiceButton from "../../../projectOperationButtons/GenerateInvoiceButton";
 
-const CbrTableActionButton = ({ record, index }) => {
+const AbrTableActionButton = ({ record, index }) => {
   const dispatch = useDispatch();
   const buttonRef = useRef();
   const { openDropdownIndex } = useSelector((store) => store.dataTable);
@@ -52,15 +52,15 @@ const CbrTableActionButton = ({ record, index }) => {
             } absolute w-24 right-16 z-50`}
           >
             <ViewProjectDetailsButton />
-            {record.status !== "Invoice Generated" && (
+            {/* {record.status !== "Advanced Invoice Generated" && (
               <CanUserView
-                element={<GenerateInvoiceButton name={'CBR'}/>}
+                element={<GenerateInvoiceButton name={"ABR"}/>}
                 allowDepartments={
                   canAcessProjectAction.generateInvoice.department
                 }
                 allowedRoles={canAcessProjectAction.generateInvoice.role}
               />
-            )}
+            )} */}
             {record.status === "Invoice Generated" && (
               <CanUserView
                 element={<GetInvoiceButton />}
@@ -75,4 +75,4 @@ const CbrTableActionButton = ({ record, index }) => {
   );
 };
 
-export default CbrTableActionButton;
+export default AbrTableActionButton;

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   flexRender,
   getCoreRowModel,
@@ -11,15 +11,12 @@ import Pagination from "../../../projectTable/Pagination";
 import ViewSowUploadList from "../../../project/view/ViewSowUploadList";
 import ViewMultipleSampleCpi from "../../../project/view/ViewMultipleSampleCpi";
 import Popup from "../../../Atom/Popup";
-import CreateInvoice from "../../invoice/CreateCbrInvoice";
 
 const CbrTable = () => {
-  const dispatch = useDispatch();
   const { isViewMultipleSampleCpiRecords } = useSelector(
     (store) => store.addMultipleSampleCpi
   );
-  const { showSowList, showAddlnFee } = useSelector((store) => store.dataTable);
-  const { isCreateInvoice } = useSelector((store) => store.financeDepartment);
+  const { showSowList } = useSelector((store) => store.dataTable);
   const { page_size, page_number } = useSelector((store) => store.projectData);
   const [pagination, setPagination] = useState({
     page_number,
@@ -101,11 +98,6 @@ const CbrTable = () => {
           <ViewSowUploadList />
         </Popup>
       )}
-      {/* {isCreateInvoice && (
-        <Popup className={"!w-6/12 !h-full !p-0"}>
-          <CreateInvoice />
-        </Popup>
-      )} */}
     </div>
   );
 };

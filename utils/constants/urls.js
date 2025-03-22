@@ -100,3 +100,4 @@ export const GET_ABR_SINGLE_PROJECT = (id) => {
   return `${BASEURL}/api/finance/abr/${id}/`;
 };
 export const GENERATE_INVOICE = BASEURL + "/api/finance/generate-invoice/";
+export const ADVANCE_BILLING = BASEURL + "/api/finance/abr/project-list/";

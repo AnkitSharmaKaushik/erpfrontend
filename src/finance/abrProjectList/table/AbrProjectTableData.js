@@ -46,11 +46,21 @@ export const AbrProjectTableData = () => {
       transaction_fee: item?.project?.transaction_fee,
       tentative_start_date: item?.project?.tentative_start_date?.split("T")[0],
       tentative_end_date: item?.project?.tentative_end_date?.split("T")[0],
+      // project_assigned_to_teamlead:
+      //   item?.project_assigned_to_teamlead
+      //     ?.map((user) => user.name)
+      //     .join(" , ") || "N/A",
+      // assigned_to: item?.project_manager?.name,
       project_assigned_to_teamlead:
         item?.project_assigned_to_teamlead
           ?.map((user) => user.name)
-          .join(" , ") || "N/A",
-      assigned_to: item?.project_manager?.name,
+          .join(" , ") ??
+        (item?.project?.project_assigned_to_teamlead
+          ?.map((user) => user.name)
+          .join(" , ") ||
+          "N/A"),
+      assigned_to:
+        item?.project_manager?.name ?? item?.project?.assigned_to?.name,
       sample: item?.sample,
       project_samples: item?.project_samples,
       project_actual_start_date: item?.project_actual_start_date,
@@ -65,7 +75,7 @@ export const AbrProjectTableData = () => {
       created_by: item?.created_by,
       created_at: item?.created_at,
     }));
-  }, [abrProjectsData, filterOption?.searchText,abrActiveTabs]); // ✅ Proper dependencies
+  }, [abrProjectsData, filterOption?.searchText, abrActiveTabs]); // ✅ Proper dependencies
 
   return data;
 };

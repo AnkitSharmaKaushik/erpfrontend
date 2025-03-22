@@ -148,7 +148,7 @@ const ViewProjectDetails = () => {
             { label: "Status", value: data.status },
             {
               label: "Sow",
-              value: data.documents.map((d) => d.upload_document) && (
+              value: data?.documents?.map((d) => d?.upload_document) && (
                 <div className="flex">
                   <Link
                     to={BASEURL + data.documents.map((d) => d.upload_document)}

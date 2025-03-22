@@ -9,8 +9,8 @@ import {
   setSowList,
   toggleShowSowList,
 } from "../../../../utils/slices/dataTableSlice";
-import TableActionsButton from "../../../projectTable/TableActionsButton";
 import { addMultipleSample, toggleViewMultipleCpiSample } from "../../../../utils/slices/addMutipleSampleCpiSlice";
+import AbrTableActionButton from "./AbrTableActionButton";
 
 export const AbrProjectColumn = () => {
   const selectedRowRecord = useSelector((store) => store.dataTable.selectedRow);
@@ -199,7 +199,7 @@ export const AbrProjectColumn = () => {
           header: "Actions",
           cell: (info) => {
             const row = info?.row?.original;
-            return <div className="flex justify-center"><TableActionsButton record={row} index={info?.row?.id} /></div>;
+            return <div className="flex justify-center"><AbrTableActionButton record={row} index={info?.row?.id} /></div>;
           },
         }),
       ].filter(Boolean),

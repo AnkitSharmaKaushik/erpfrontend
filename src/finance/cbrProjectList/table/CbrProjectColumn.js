@@ -65,7 +65,7 @@ export const CbrProjectColumn = () => {
           cell: (info) => info.getValue(),
         }),
         !allManagerRolesRole &&
-          columnHelper.accessor("assigned_to", {
+          columnHelper.accessor("assigned_to", { 
             id: "unimrkt_pm",
             header: "UniMrkt PM",
             cell: (info) => info.getValue(),
