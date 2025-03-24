@@ -11,6 +11,8 @@ export const AssignedProjectTableData = () => {
       project_code: item?.project_code,
       name: item?.name,
       clients: item?.clients,
+      project_client_pm: item?.project_client_pm,
+      purchase_order_no: item?.purchase_order_no,
     }));
   }, [projects]);
 

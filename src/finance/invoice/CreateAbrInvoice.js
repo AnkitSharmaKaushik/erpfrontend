@@ -5,21 +5,26 @@ import InvoiceCompanyLogo from "./InvoiceCompanyLogo";
 import InvoiceCompanyName from "./InvoiceCompanyName";
 import InvoiceCompanyAddressAndEmail from "./InvoiceCompanyAddressAndEmail";
 import InvoiceDateAndDueDate from "./InvoiceDateAndDueDate";
-import InvoiceType from "./InvoiceType";
 import InvoiceClientDetails from "./InvoiceClientDetails";
 import InvoiceBuyerDetails from "./InvoiceBuyerDetails";
-import InvoiceSampleAndCostDetails from "./InvoiceSampleAndCostDetails";
 import InvoiceBankDetails from "./InvoiceBankDetails";
-import { ADVANCE_BILLING, CBR_PROJECT_LIST, GENERATE_INVOICE, VIEW_CBR_DETAILS } from "../../../utils/constants/urls";
-import { setCbrProjects, toggleIsCreateInvoice } from "../../../utils/slices/financeDepartmentSlice";
+import {
+  ABR_PROJECT_LIST,
+  ADVANCE_BILLING,
+  GENERATE_INVOICE,
+} from "../../../utils/constants/urls";
+import {
+  setAbrProjects,
+  toggleIsCreateInvoice,
+} from "../../../utils/slices/financeDepartmentSlice";
 import { getWithAuth, postWithAuth } from "../../provider/helper/axios";
 import SweetAlert from "../../components/SweetAlert";
+import ABRInvoiceSampleAndCostDetails from "./ABRInvoiceSampleAndCostDetails";
 
 const CreateAbrInvoice = () => {
   const { selectedCompanyDetails } = useSelector(
     (store) => store.financeDepartment.cbr.createInvoice
   );
-  const { cbrProjectsData } = useSelector((store) => store.financeDepartment);
   const { selectedRecord } = useSelector((store) => store.dataTable);
   const { clients } = useSelector((store) => store.projectData);
   const location = useLocation();
@@ -32,9 +37,7 @@ const CreateAbrInvoice = () => {
     (cName) => cName.name.toLowerCase() === data?.clients.toLowerCase()
   );
   const [ABRDetails, setABRDetails] = useState([]);
-  console.log("🚀 ~ CreateAbrInvoice ~ ABRDetails:", ABRDetails)
-  const [CBRDetails, setCBRDetails] = useState([]);
-  console.log("🚀 ~ CreateAbrInvoice ~ CBRDetails:", CBRDetails)
+  // console.log("🚀 ~ CreateAbrInvoice ~ ABRDetails:", ABRDetails);
 
   const [invoiceData, setInvoiceData] = useState({
     advanceType: "",
@@ -62,24 +65,10 @@ const CreateAbrInvoice = () => {
     sample: 0, // Keep numbers as 0
     services: data?.project_type,
     studyName: "",
-    totalCost: CBRDetails?.reduce((total, cbr) => {
-      return (
-        total +
-        cbr?.final_samples?.reduce((sum, item) => {
-          return sum + Number(item.sample) * Number(item.cpi);
-        }, 0)
-      );
-    }, 0).toFixed(2),
-    final_payment: (
-      CBRDetails?.reduce((total, cbr) => {
-        return (
-          total +
-          cbr?.final_samples?.reduce((sum, item) => {
-            return sum + Number(item.sample) * Number(item.cpi);
-          }, 0)
-        );
-      }, 0) - (ABRDetails[0]?.advance_invoice_amount || 0)
-    ).toFixed(2),
+    totalCost: ABRDetails[0]?.project?.project_samples.reduce((total, abr) => {
+      return total + Number(abr.sample) * Number(abr.cpi);
+    }, 0),
+    final_payment: (ABRDetails[0]?.advance_invoice_amount || 0),
   });
 
   const [invoiceFinalData, setInvoiceFinalData] = useState({
@@ -92,11 +81,11 @@ const CreateAbrInvoice = () => {
     entity: selectedCompanyDetails?.id,
     final_payment: invoiceData?.final_payment,
     issue_date: invoiceData?.date,
-    po_number: CBRDetails[0]?.po_number,
+    po_number: ABRDetails[0]?.po_number,
     project: data?.id,
     services: invoiceData?.services,
     total_cost_usd: invoiceData?.totalCost,
-    type: invoiceData?.advanceType,
+    type: "ABR",
   });
 
   useEffect(() => {
@@ -109,7 +98,6 @@ const CreateAbrInvoice = () => {
       issue_date: invoiceData?.date,
       services: invoiceData?.services,
       total_cost_usd: invoiceData?.totalCost,
-      type: invoiceData?.advanceType,
       cost_components: invoiceData?.cost_components,
       description: invoiceData?.description,
     }));
@@ -120,7 +108,6 @@ const CreateAbrInvoice = () => {
     invoiceData?.date,
     invoiceData?.services,
     invoiceData?.totalCost,
-    invoiceData?.advanceType,
     invoiceData?.cost_components,
     invoiceData?.description,
   ]);
@@ -128,10 +115,11 @@ const CreateAbrInvoice = () => {
   useEffect(() => {
     setInvoiceFinalData((prev) => ({
       ...prev,
+      advance_paid: ABRDetails[0]?.advance_invoice_amount || 0,
       abr: ABRDetails[0]?.id,
-      po_number: CBRDetails[0]?.po_number,
+      po_number: ABRDetails[0]?.po_number,
     }));
-  }, [CBRDetails]);
+  }, [ABRDetails]);
 
   useEffect(() => {
     if (selectedCompanyDetails) {
@@ -163,8 +151,6 @@ const CreateAbrInvoice = () => {
       (item) => item?.project?.id === data?.id
     );
     setABRDetails(currentProjectWithABR);
-    const cbrResponse = await getWithAuth(VIEW_CBR_DETAILS(data?.id));
-    setCBRDetails(cbrResponse?.data);
   };
 
   useEffect(() => {
@@ -183,9 +169,9 @@ const CreateAbrInvoice = () => {
         icon: "success",
       });
       navigate(-1);
-      const response = await getWithAuth(CBR_PROJECT_LIST);
+      const response = await getWithAuth(ABR_PROJECT_LIST);
       const data = await response?.data;
-      dispatch(setCbrProjects(data));
+      dispatch(setAbrProjects(data));
     } else {
       SweetAlert({
         title: "Error",
@@ -220,11 +206,20 @@ const CreateAbrInvoice = () => {
             invoiceData={invoiceData}
             setInvoiceData={setInvoiceData}
           />
-          <InvoiceType
-            setInvoiceData={setInvoiceData}
-            ABRDetails={ABRDetails}
-            data={invoiceData}
-          />
+          <div className="w-full">
+            <div className="flex flex-col items-end">
+              <div className="m-1 flex items-center">
+                <label className="font-semibold text-gray-800 mr-2 min-w-24">
+                  Invoice Type:
+                </label>
+                <input
+                  disabled
+                  value={"ABR"}
+                  className="p-1  pl-2 border bg-gray-200 rounded-md"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -242,11 +237,10 @@ const CreateAbrInvoice = () => {
       </div>
       {/* Sample and Cost Details */}
       <div className="mb-6">
-        <InvoiceSampleAndCostDetails
-          CBRDetails={CBRDetails}
+        <ABRInvoiceSampleAndCostDetails
+          ABRDetails={ABRDetails}
           setInvoiceData={setInvoiceData}
           invoiceData={invoiceData}
-          ABRDetails={ABRDetails}
           setInvoiceFinalData={setInvoiceFinalData}
         />
       </div>
@@ -265,7 +259,10 @@ const CreateAbrInvoice = () => {
           Generate Invoice
         </button>
         <button
-          onClick={()=>{dispatch(toggleIsCreateInvoice());navigate(-1)}}
+          onClick={() => {
+            dispatch(toggleIsCreateInvoice());
+            navigate(-1);
+          }}
           className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl shadow-lg transition-transform transform hover:scale-105"
         >
           Close

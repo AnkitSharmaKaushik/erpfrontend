@@ -57,7 +57,7 @@ const MainTable = () => {
         new Date(row.original.tentative_end_date) >= new Date(currentDate);
       let enableStatus =
         row.original.status !== "CBR Raised" &&
-        row.original.status !== "Completed";
+        row.original.status !== "Completed" && row.original.status !== "Cancelled";
       return enableDate && enableStatus;
     },
     debugTable: true,

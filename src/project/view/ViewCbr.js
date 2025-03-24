@@ -84,20 +84,16 @@ const ViewCbr = () => {
             <tbody>
               {tableRows.map(
                 ({ label, key, default: defaultValue = "N/A" }) => (
-                  console.log(data?.[key]),
-                  (
-                    <tr key={key}>
-                      <td className="primary_color w-1/2 text-white p-1 border text-left">
-                        {label}
-                      </td>
-                      <td className="p-1 text-left w-1/2 border pl-2">
-                        {isObject(data?.[key])
-                          ? data?.[key].name
-                          : data?.[key] ?? defaultValue}
-                        {/* {data?.[key] ?? defaultValue} */}
-                      </td>
-                    </tr>
-                  )
+                  <tr key={key}>
+                    <td className="primary_color w-1/2 text-white p-1 border text-left">
+                      {label}
+                    </td>
+                    <td className="p-1 text-left w-1/2 border pl-2">
+                      {isObject(data?.[key])
+                        ? data?.[key].name
+                        : data?.[key] ?? defaultValue}
+                    </td>
+                  </tr>
                 )
               )}
             </tbody>

@@ -191,21 +191,11 @@ const RaiseCbr = () => {
   return (
     <div className="p-4">
       <h3 className="text-2xl font-semibold underline pb-4">CBR Data</h3>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-3 gap-4 items-center">
         {RaiseCbrInputFields({ sampleData, setSampleData }).map(
           (field, index) => (
             <div key={index} className="text-left">
-              {field.isCheckbox ? (
-                <div className="flex items-center gap-2">
-                  <Label labelName={field.labelName} />
-                  <input
-                    type="checkbox"
-                    onChange={field.inputChange}
-                    className="h-5 w-5"
-                    checked={field.isCheck}
-                  />
-                </div>
-              ) : field.isCustomComponent ? (
+              {field.isCustomComponent ? (
                 <div>
                   <Label labelName={field.labelName} className="pb-2" />
                   <div
@@ -221,19 +211,40 @@ const RaiseCbr = () => {
                   </div>
                 </div>
               ) : (
-                <LableAndInput
-                  labelClassName="text-left"
-                  labelName={field.labelName}
-                  InputType={field.InputType || "text"}
-                  inputValue={field.InputValue}
-                  disabled={field.disabled}
-                  inputClassName={`p-2 border rounded-md ${
-                    field.disabled
-                      ? "cursor-not-allowed bg-gray-100"
-                      : "bg-white"
-                  }`}
-                  inputChange={field.inputChange}
-                />
+                !field.isCheckbox && (
+                  <LableAndInput
+                    labelClassName="text-left"
+                    labelName={field.labelName}
+                    InputType={field.InputType || "text"}
+                    inputValue={field.InputValue}
+                    disabled={field.disabled}
+                    inputClassName={`p-2 border rounded-md ${
+                      field.disabled
+                        ? "cursor-not-allowed bg-gray-100"
+                        : "bg-white"
+                    }`}
+                    inputChange={field.inputChange}
+                  />
+                )
+              )}
+            </div>
+          )
+        )}
+      </div>
+      <div>
+        {RaiseCbrInputFields({ sampleData, setSampleData }).map(
+          (field, index) => (
+            <div key={index} className="text-left mt-2">
+              {field.isCheckbox && (
+                <div className="flex items-center gap-2">
+                  <Label labelName={field.labelName} />
+                  <input
+                    type="checkbox"
+                    onChange={field.inputChange}
+                    className="h-5 w-5"
+                    checked={field.isCheck}
+                  />
+                </div>
               )}
             </div>
           )

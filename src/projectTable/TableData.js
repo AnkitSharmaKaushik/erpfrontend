@@ -71,6 +71,8 @@ export const TableData = () => {
       initial_sample_size: item.initial_sample_size,
       created_by: item?.created_by,
       created_at: item?.created_at,
+      purchase_order_no:item?.purchase_order_no
+
     }));
   }, [projects, filterOption?.searchText, filterOption?.selectedOption]);
 

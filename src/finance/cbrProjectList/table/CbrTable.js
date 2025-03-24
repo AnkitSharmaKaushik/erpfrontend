@@ -17,7 +17,7 @@ const CbrTable = () => {
   const { isViewMultipleSampleCpiRecords } = useSelector(
     (store) => store.addMultipleSampleCpi
   );
-  const { showSowList,isViewCbr } = useSelector((store) => store.dataTable);
+  const { showSowList, isViewCbr } = useSelector((store) => store.dataTable);
   const { page_size, page_number } = useSelector((store) => store.projectData);
   const [pagination, setPagination] = useState({
     page_number,
@@ -99,7 +99,7 @@ const CbrTable = () => {
           <ViewSowUploadList />
         </Popup>
       )}
-       {isViewCbr && (
+      {isViewCbr && (
         <Popup>
           <ViewCbr />
         </Popup>

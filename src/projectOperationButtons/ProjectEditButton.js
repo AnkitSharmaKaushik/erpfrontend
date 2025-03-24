@@ -27,7 +27,7 @@ const ProjectEditButton = () => {
       {selectedRecord.status !== "Project Initiated" &&
         selectedRecord.status !== "Completed" &&
         selectedRecord.status !== "CBR Raised" &&
-        selectedRecord.status !== "On Hold" && (
+        selectedRecord.status !== "On Hold" && selectedRecord.status !== "Cancelled" && (
           <button
             className="border-b border-black text-left bg-[#bd1d1d] text-white z-50 p-2 hover:bg-yellow-200 hover:text-black rounded-sm w-full"
             onClick={() => {

@@ -60,7 +60,7 @@ const CbrTableActionButton = ({ record, index }) => {
             />
             {record.status !== "Invoice Generated" && (
               <CanUserView
-                element={<GenerateInvoiceButton name={'CBR'}/>}
+                element={<GenerateInvoiceButton name={"CBR"} />}
                 allowDepartments={
                   canAcessProjectAction.generateInvoice.department
                 }

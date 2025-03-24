@@ -52,7 +52,7 @@ const AbrTableActionButton = ({ record, index }) => {
             } absolute w-24 right-16 z-50`}
           >
             <ViewProjectDetailsButton />
-            {/* {record.status !== "Advanced Invoice Generated" && (
+            {record.status !== "Advanced Invoice Generated" && (
               <CanUserView
                 element={<GenerateInvoiceButton name={"ABR"}/>}
                 allowDepartments={
@@ -60,7 +60,7 @@ const AbrTableActionButton = ({ record, index }) => {
                 }
                 allowedRoles={canAcessProjectAction.generateInvoice.role}
               />
-            )} */}
+            )}
             {record.status === "Invoice Generated" && (
               <CanUserView
                 element={<GetInvoiceButton />}

@@ -65,7 +65,7 @@ export const CbrProjectColumn = () => {
           cell: (info) => info.getValue(),
         }),
         !allManagerRolesRole &&
-          columnHelper.accessor("assigned_to", { 
+          columnHelper.accessor("assigned_to", {
             id: "unimrkt_pm",
             header: "UniMrkt PM",
             cell: (info) => info.getValue(),
@@ -207,7 +207,12 @@ export const CbrProjectColumn = () => {
           header: "Actions",
           cell: (info) => {
             const row = info?.row?.original;
-            return <div className="flex justify-center"> <CbrTableActionButton record={row} index={info?.row?.id} /></div>;
+            return (
+              <div className="flex justify-center">
+                {" "}
+                <CbrTableActionButton record={row} index={info?.row?.id} />
+              </div>
+            );
           },
         }),
       ].filter(Boolean),

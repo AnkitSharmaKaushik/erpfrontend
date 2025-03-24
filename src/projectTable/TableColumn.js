@@ -70,7 +70,8 @@ export const TableColumn = () => {
                               new Date(currentDate);
                             const enableStatus =
                               item.status !== "CBR Raised" &&
-                              item.status !== "Completed";
+                              item.status !== "Completed" &&
+                              item.status !== "Cancelled";
                             return enableDate && enableStatus;
                           })
                         : [];

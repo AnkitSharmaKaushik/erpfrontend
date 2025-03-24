@@ -51,12 +51,12 @@ export const RaiseCbrInputFields = ({ sampleData, setSampleData }) => {
       InputValue: selectedRecord?.clients,
       disabled: true,
     },
-    {
-      labelName: "PO Number",
-      InputValue: sampleData.purchase_order_number,
-      inputChange: (e) =>
-        setSampleData({ ...sampleData, purchase_order_number: e.target.value }),
-    },
+    // {
+    //   labelName: "PO Number",
+    //   InputValue: sampleData.purchase_order_number,
+    //   inputChange: (e) =>
+    //     setSampleData({ ...sampleData, purchase_order_number: e.target.value }),
+    // },
     {
       labelName: "Client Contact Person",
       InputValue: sampleData?.client_contact_person,

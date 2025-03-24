@@ -21,6 +21,7 @@ const InvoiceSampleAndCostDetails = ({
         }))
       ),
     }));
+    console.log("🚀 ~ CBRDetails:", CBRDetails)
   }, [CBRDetails]);
 
   const totalProjectCost = CBRDetails?.reduce((total, cbr) => {
@@ -42,7 +43,7 @@ const InvoiceSampleAndCostDetails = ({
   useEffect(() => {
     setInvoiceData((prev) => ({
       ...prev,
-      totalCost: totalProjectCost.toFixed(2),
+      totalCost: totalProjectCost?.toFixed(2),
       final_payment: finalPayment,
     }));
   }, [finalPayment, totalProjectCost]);
@@ -169,14 +170,14 @@ const InvoiceSampleAndCostDetails = ({
           <tr className="border">
             <td className="border p-2">Total Project Cost</td>
             <td colSpan="3"></td>
-            <td className="border p-2">{"$" + totalProjectCost.toFixed(2)}</td>
+            <td className="border p-2">{"$" + totalProjectCost?.toFixed(2)}</td>
           </tr>
 
           {invoiceData?.advanceType === "CBR" && (
             <tr className="border">
               <td className="border p-2">Less: Advance against Invoice</td>
               <td colSpan="3"></td>
-              <td className="border p-2">{"$" + advanceAmount.toFixed(2)}</td>
+              <td className="border p-2">{"$" + advanceAmount?.toFixed(2)}</td>
             </tr>
           )}
 

@@ -39,7 +39,7 @@ const RaiseCbrButton = () => {
     <div className="flex justify-center items-center">
       {selectedRecord.status === "Completed" &&
         selectedRecord.status !== "On Hold" &&
-        selectedRecord.status !== "CBR Raised" && (
+        selectedRecord.status !== "CBR Raised" && selectedRecord.status !== "Cancelled" && (
           <button
             className="border-black text-left bg-[#bd1d1d] text-white z-50 p-2 hover:bg-yellow-200 hover:text-black rounded-sm w-full"
             onClick={() => handleRaiseCBR(selectedRecord)}

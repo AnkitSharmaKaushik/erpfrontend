@@ -73,7 +73,7 @@ export const AssignProjectColumn = () => {
             inputValuesRef.current[row.id]?.purchase_order_no ||
             projectAssignmentData.find((item) => item.project_id === row.id)
               ?.purchase_order_no ||
-            "";
+            row?.purchase_order_no;
 
           return (
             <input
@@ -85,6 +85,7 @@ export const AssignProjectColumn = () => {
               onChange={(e) =>
                 handleInputChange(row.id, "purchase_order_no", e.target.value)
               }
+              disabled={row?.purchase_order_no}
             />
           );
         },
@@ -98,8 +99,7 @@ export const AssignProjectColumn = () => {
             inputValuesRef.current[row.id]?.project_client_pm ||
             projectAssignmentData.find((item) => item.project_id === row.id)
               ?.project_client_pm ||
-            "";
-
+            row?.project_client_pm;
           return (
             <input
               name="project_client_pm"
@@ -110,6 +110,7 @@ export const AssignProjectColumn = () => {
               onChange={(e) =>
                 handleInputChange(row.id, "project_client_pm", e.target.value)
               }
+              disabled={row?.project_client_pm}
             />
           );
         },

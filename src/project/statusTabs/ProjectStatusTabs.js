@@ -24,6 +24,7 @@ const ProjectStatusTabs = ({ className }) => {
       "On Hold",
       "Completed",
       "CBR Raised",
+      "Cancelled"
     ].map(
       (status) =>
         `${status} (${
@@ -41,6 +42,7 @@ const ProjectStatusTabs = ({ className }) => {
     "On Hold",
     "Completed",
     "CBR Raised",
+    "Cancelled"
   ];
 
   return (

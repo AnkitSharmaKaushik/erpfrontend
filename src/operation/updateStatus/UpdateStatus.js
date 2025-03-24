@@ -6,7 +6,10 @@ import Label from "../../Atom/Label";
 import SweetAlert from "../../components/SweetAlert";
 import { toggleChangeProjectStatus } from "../../../utils/slices/dataTableSlice";
 import { ProjectData } from "../../../utils/apis/projectData";
-import { addProjectWithoutAnyFilter, setProjects } from "../../../utils/slices/projectSlice";
+import {
+  addProjectWithoutAnyFilter,
+  setProjects,
+} from "../../../utils/slices/projectSlice";
 import { ChangeStatus } from "../../fetchApis/projects/changeStatus/changeStatus";
 import { toggleChangeProjectStatus } from "../../../utils/slices/dataTableSlice";
 import { getDashboardProject } from "../../fetchApis/dashboard";
@@ -30,7 +33,7 @@ const UpdateStatus = () => {
       [name]: value,
     });
   };
-  
+
   const handleCancelUpdate = () => {
     dispatch(toggleChangeProjectStatus());
   };
@@ -72,7 +75,18 @@ const UpdateStatus = () => {
     }
   };
 
- 
+  const statusChangeOption =
+    selectedRecord.status === "Project Initiated" ||
+    selectedRecord.status === "To Be Started"
+      ? [
+          "--Select Status--",
+          "In Progress",
+          "Completed",
+          "On Hold",
+          "Cancelled",
+        ]
+      : ["--Select Status--", "In Progress", "Completed", "On Hold"];
+
   const statusItems = [
     {
       labelName: "Project Code",
@@ -95,7 +109,7 @@ const UpdateStatus = () => {
     {
       labelName: "Status",
       isDropdown: true,
-      options: ["--Select Status--", "In Progress", "Completed", "On Hold"],
+      options: statusChangeOption,
       onChange: handleStatusChange,
       name: "status",
       id: "status update",
