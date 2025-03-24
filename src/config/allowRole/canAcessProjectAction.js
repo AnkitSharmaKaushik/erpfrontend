@@ -93,6 +93,6 @@ export const canAcessProjectAction = {
       "Ass.Manager",
       "Team Lead",
     ],
-    department: [2],
+    department: [2,3],
   },
 };

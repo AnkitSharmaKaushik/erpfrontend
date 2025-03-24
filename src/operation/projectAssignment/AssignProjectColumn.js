@@ -64,51 +64,51 @@ export const AssignProjectColumn = () => {
         header: "Project Name",
         cell: (info) => info.getValue(),
       }),
-      columnHelper.accessor("Purchase Order No.", {
-        id: "PurchaseOrderNo",
+      columnHelper.accessor("purchase_order_no.", {
+        id: "purchase_order_no",
         header: "Purchase Order No.",
         cell: (info) => {
           const row = info.row.original;
           const defaultValue =
-            inputValuesRef.current[row.id]?.PurchaseOrderNo ||
+            inputValuesRef.current[row.id]?.purchase_order_no ||
             projectAssignmentData.find((item) => item.project_id === row.id)
-              ?.PurchaseOrderNo ||
+              ?.purchase_order_no ||
             "";
 
           return (
             <input
-              name="PurchaseOrderNo"
+              name="purchase_order_no"
               type="text"
               defaultValue={defaultValue}
               className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none"
               placeholder="Purchase Order No."
               onChange={(e) =>
-                handleInputChange(row.id, "PurchaseOrderNo", e.target.value)
+                handleInputChange(row.id, "purchase_order_no", e.target.value)
               }
             />
           );
         },
       }),
-      columnHelper.accessor("Client PM", {
-        id: "ClientPM",
+      columnHelper.accessor("project_client_pm", {
+        id: "project_client_pm",
         header: "Client PM",
         cell: (info) => {
           const row = info.row.original;
           const defaultValue =
-            inputValuesRef.current[row.id]?.ClientPM ||
+            inputValuesRef.current[row.id]?.project_client_pm ||
             projectAssignmentData.find((item) => item.project_id === row.id)
-              ?.ClientPM ||
+              ?.project_client_pm ||
             "";
 
           return (
             <input
-              name="ClientPM"
+              name="project_client_pm"
               type="text"
               defaultValue={defaultValue}
               className="w-full px-3 py-2 border border-gray-200 rounded-md focus:outline-none"
               placeholder="Client PM"
               onChange={(e) =>
-                handleInputChange(row.id, "ClientPM", e.target.value)
+                handleInputChange(row.id, "project_client_pm", e.target.value)
               }
             />
           );

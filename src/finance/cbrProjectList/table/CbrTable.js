@@ -11,12 +11,13 @@ import Pagination from "../../../projectTable/Pagination";
 import ViewSowUploadList from "../../../project/view/ViewSowUploadList";
 import ViewMultipleSampleCpi from "../../../project/view/ViewMultipleSampleCpi";
 import Popup from "../../../Atom/Popup";
+import ViewCbr from "../../../project/view/ViewCbr";
 
 const CbrTable = () => {
   const { isViewMultipleSampleCpiRecords } = useSelector(
     (store) => store.addMultipleSampleCpi
   );
-  const { showSowList } = useSelector((store) => store.dataTable);
+  const { showSowList,isViewCbr } = useSelector((store) => store.dataTable);
   const { page_size, page_number } = useSelector((store) => store.projectData);
   const [pagination, setPagination] = useState({
     page_number,
@@ -96,6 +97,11 @@ const CbrTable = () => {
       {showSowList && (
         <Popup>
           <ViewSowUploadList />
+        </Popup>
+      )}
+       {isViewCbr && (
+        <Popup>
+          <ViewCbr />
         </Popup>
       )}
     </div>

@@ -240,7 +240,7 @@ const RaiseCbr = () => {
         )}
       </div>
       {isRaiseVpr && (
-        <div className="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 overflow-y-scroll z-30 bg-gray-200 border w-10/12 shadow-md max-h-[550px] h-full">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-y-scroll z-30 bg-gray-200 border w-10/12 shadow-md max-h-[550px] h-full">
           <RaiseVpr vprData={vprData} setVprData={setVprData} />
         </div>
       )}

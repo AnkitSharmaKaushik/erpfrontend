@@ -26,17 +26,14 @@ export const AddManDays = ({ setMultiEditFieldOpen }) => {
   const dispatch = useDispatch();
 
   const [openRight, setOpenRight] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(null); 
+  const [selectedDate, setSelectedDate] = useState(null);
 
   const handleDate = (e) => {
     const inputDate = e.target.value;
     if (!inputDate) return;
-
     const [day, month, year] = inputDate.split("/");
     const isoDate = new Date(`${year}-${month}-${day}`).toISOString();
-
     setSelectedDate(isoDate);
-
     dispatch(
       setMultipleManDays(
         MultipleManDays.length > 0
@@ -65,7 +62,7 @@ export const AddManDays = ({ setMultiEditFieldOpen }) => {
     }));
     dispatch(setMultipleManDays(updatedEntries));
     const validateFields = addManDaysValidation(updatedEntries);
-    if (validateFields()) {
+    if (validateFields) {
       BulkUpdateManDays(updatedEntries);
     }
   };
@@ -95,7 +92,7 @@ export const AddManDays = ({ setMultiEditFieldOpen }) => {
     }
   };
   const handleAddManDayDrawer = useRef();
-  useHandleOutsideClick(handleAddManDayDrawer, closeDrawerRight);
+  // useHandleOutsideClick(handleAddManDayDrawer, closeDrawerRight);
 
   return (
     <React.Fragment>

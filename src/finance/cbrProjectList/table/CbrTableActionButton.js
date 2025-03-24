@@ -15,6 +15,7 @@ import {
   toggleIsViewOptionOpen,
 } from "../../../../utils/slices/dataTableSlice";
 import GenerateInvoiceButton from "../../../projectOperationButtons/GenerateInvoiceButton";
+import ViewCbrButton from "../../../projectOperationButtons/ViewCbrButton";
 
 const CbrTableActionButton = ({ record, index }) => {
   const dispatch = useDispatch();
@@ -52,6 +53,11 @@ const CbrTableActionButton = ({ record, index }) => {
             } absolute w-24 right-16 z-50`}
           >
             <ViewProjectDetailsButton />
+            <CanUserView
+              element={<ViewCbrButton />}
+              allowDepartments={canAcessProjectAction.viewCBR.department}
+              allowedRoles={canAcessProjectAction.viewCBR.role}
+            />
             {record.status !== "Invoice Generated" && (
               <CanUserView
                 element={<GenerateInvoiceButton name={'CBR'}/>}

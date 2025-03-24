@@ -50,8 +50,8 @@ const AssignedProject = ({ setMultiEditFieldOpen }) => {
               project_id: item.project_id,
               assigned_by: userrole,
               assigned_to: matchedTeamLead.value,
-              client_pm: item.ClientPM || "",
-              po_no: item.PurchaseOrderNo || "",
+              project_client_pm: item.project_client_pm || "",
+              purchase_order_no: item.purchase_order_no || "",
             }
           : null;
       }).filter((entry) => entry !== null);
@@ -69,6 +69,7 @@ const AssignedProject = ({ setMultiEditFieldOpen }) => {
         icon: "success",
       });
       dispatch(addProjectAssignment([]));
+      closeDrawerRight();
 
       const projectData = await ProjectData(page_number, page_size, activeTab);
       dispatch(setProjects(projectData?.results));
@@ -87,9 +88,9 @@ const AssignedProject = ({ setMultiEditFieldOpen }) => {
       PostProjectData(finalData);
     } else {
       SweetAlert({
-        title: "Info",
+        title: "Error",
         text: "Please Select a Project TL for Update",
-        icon: "info",
+        icon: "error",
       });
     }
   };
