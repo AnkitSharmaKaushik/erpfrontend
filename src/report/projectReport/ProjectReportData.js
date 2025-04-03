@@ -28,9 +28,9 @@ export const ProjectReportData = () => {
   const filterByAgeRange = (ranges) => {
     return projectData.filter((item) => {
       const createdAt = item.cbr_raised_date?.date
-      ? new Date(item.cbr_raised_date?.date)
-      : null;
-      
+        ? new Date(item.cbr_raised_date?.date)
+        : null;
+
       // Skip invalid dates
       if (!createdAt || isNaN(createdAt)) return false;
 
@@ -68,8 +68,8 @@ export const ProjectReportData = () => {
     const validUserIds = allPersonReportingToSelected.map((user) => user?.id);
 
     const salesPersonIds = users
-    .filter((user) => salesPerson.includes(user?.user_role?.name))
-    .map((user) => user?.id);
+      .filter((user) => salesPerson.includes(user?.user_role?.name))
+      .map((user) => user?.id);
 
     let filteredData = searchText
       ? projectData.filter((item) =>
@@ -86,12 +86,9 @@ export const ProjectReportData = () => {
         )
       : projectData;
 
-
     filteredData = invoiceStatus
       ? filteredData.filter((item) => item.status === invoiceStatus)
       : filteredData;
-      console.log("🚀 ~ data ~ filteredData before:", filteredData,invoiceStatus)
-
 
     filteredData = salesPerson.length
       ? filteredData.filter(
@@ -101,17 +98,12 @@ export const ProjectReportData = () => {
         )
       : filteredData;
 
-      // filteredData = invoiceAge.length
-      //     ? filterByAgeRange(invoiceAge)
-      //     : projectData;
+    filteredData = invoiceAge.length
+      ? filterByAgeRange(invoiceAge).filter((item) =>
+          filteredData.includes(item)
+        )
+      : filteredData;
 
-      filteredData = invoiceAge.length
-  ? filterByAgeRange(invoiceAge).filter((item) => filteredData.includes(item))
-  : filteredData;
-
-    
-
-    console.log("🚀 ~ data ~ filteredData after:", filteredData);
     return filteredData?.map((item) => ({
       id: item?.id,
       project_code: item?.project_code,
