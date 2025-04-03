@@ -12,6 +12,7 @@ import projectAssignmentSlice from "../utils/slices/projectAssignmentSlice.js";
 import financeDepartmentSlice from "../utils/slices/financeDepartmentSlice.js";
 import generateInvoiceSlice from "../utils/slices/generateInvoiceSlice.js";
 import multipleManDaysSlice from "../utils/slices/addMultipleManDaysSlice.js";
+import ReportSlice from "../utils/slices/reportSlice.js";
 
 export default configureStore({
   reducer: {
@@ -28,5 +29,6 @@ export default configureStore({
     financeDepartment: financeDepartmentSlice,
     generateInvoice: generateInvoiceSlice,
     MultipleManDays: multipleManDaysSlice,
+    ReportSlice:ReportSlice
   },
 });

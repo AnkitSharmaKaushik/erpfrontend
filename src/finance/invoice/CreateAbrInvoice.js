@@ -10,7 +10,6 @@ import InvoiceBuyerDetails from "./InvoiceBuyerDetails";
 import InvoiceBankDetails from "./InvoiceBankDetails";
 import {
   ABR_PROJECT_LIST,
-  ADVANCE_BILLING,
   GENERATE_INVOICE,
 } from "../../../utils/constants/urls";
 import {
@@ -37,7 +36,6 @@ const CreateAbrInvoice = () => {
     (cName) => cName.name.toLowerCase() === data?.clients.toLowerCase()
   );
   const [ABRDetails, setABRDetails] = useState([]);
-  // console.log("🚀 ~ CreateAbrInvoice ~ ABRDetails:", ABRDetails);
 
   const [invoiceData, setInvoiceData] = useState({
     advanceType: "",
@@ -146,7 +144,7 @@ const CreateAbrInvoice = () => {
   }, [invoiceData.sample, invoiceData.cpi]);
 
   const getCompany = async (id) => {
-    const abrResponse = await getWithAuth(ADVANCE_BILLING);
+    const abrResponse = await getWithAuth(ABR_PROJECT_LIST);
     const currentProjectWithABR = abrResponse?.data?.filter(
       (item) => item?.project?.id === data?.id
     );

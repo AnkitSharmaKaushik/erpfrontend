@@ -31,7 +31,7 @@ const MainTable = () => {
     isAddManDays,
     isUploadSow,
     isRaiseCbr,
-    isViewCbr
+    isViewCbr,
   } = useSelector((store) => store.dataTable);
   const { page_size, page_number, projects } = useSelector(
     (store) => store.projectData
@@ -57,7 +57,9 @@ const MainTable = () => {
         new Date(row.original.tentative_end_date) >= new Date(currentDate);
       let enableStatus =
         row.original.status !== "CBR Raised" &&
-        row.original.status !== "Completed" && row.original.status !== "Cancelled";
+        row.original.status !== "Completed" &&
+        row.original.status !== "On Hold" &&
+        row.original.status !== "Cancelled";
       return enableDate && enableStatus;
     },
     debugTable: true,
@@ -89,11 +91,16 @@ const MainTable = () => {
       }
     }
   };
+console.log("asdf");
 
   return (
-    <div className="rounded-sm overflow-auto">
+    <div className="rounded-sm overflow-visible">
       <div
-        className={`${data.length > 20 ? "h-[800px]" : "h-auto"} overflow-auto`}
+        className={`${
+          data.length > 20
+            ? "h-[800px] overflow-auto"
+            : "h-auto overflow-visible"
+        } `}
         onScroll={onScrollLoadProjectData}
         ref={listInnerRef}
       >

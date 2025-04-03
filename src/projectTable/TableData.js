@@ -12,7 +12,7 @@ export const TableData = () => {
     const selectedOptions = filterOption?.selectedOption || [];
 
     const searchInObject = (obj, searchText) => {
-      if (!obj || typeof obj !== "object") return false; 
+      if (!obj || typeof obj !== "object") return false;
 
       return Object.values(obj).some((value) => {
         if (typeof value === "object" && value !== null) {
@@ -28,9 +28,13 @@ export const TableData = () => {
       return selectedOptions.some((option) => {
         return (
           item?.clients?.name?.toLowerCase().includes(option.toLowerCase()) ||
-          item?.assigned_to?.name?.toLowerCase().includes(option.toLowerCase()) ||
-          // item?.assigned_to?.name?.toLowerCase().includes(option.toLowerCase()) 
-          item?.project_assigned_to_teamlead?.map((user) => user.name?.toLowerCase()).includes(option.toLowerCase())
+          item?.assigned_to?.name
+            ?.toLowerCase()
+            .includes(option.toLowerCase()) ||
+          // item?.assigned_to?.name?.toLowerCase().includes(option.toLowerCase())
+          item?.project_assigned_to_teamlead
+            ?.map((user) => user.name?.toLowerCase())
+            .includes(option.toLowerCase())
           // item?.assigned_to?.name?.toLowerCase().includes(option.toLowerCase())
         );
       });
@@ -56,7 +60,9 @@ export const TableData = () => {
       tentative_start_date: item?.tentative_start_date?.split("T")[0],
       tentative_end_date: item?.tentative_end_date?.split("T")[0],
       project_assigned_to_teamlead:
-        item?.project_assigned_to_teamlead?.map((user) => user.name).join(" , ") || "N/A",
+        item?.project_assigned_to_teamlead
+          ?.map((user) => user.name)
+          .join(" , ") || "N/A",
       assigned_to: item?.assigned_to,
       sample: item?.sample,
       project_samples: item?.project_samples,
@@ -65,14 +71,13 @@ export const TableData = () => {
       remaining_interview: item?.remaining_interview,
       man_days: item?.man_days,
       status: item?.status,
-      project_client_pm: item?.project_client_pm,
+      project_client_pm: item?.project_client_pm?.name,
       upload_document: item?.upload_document,
       documents: item?.documents,
       initial_sample_size: item.initial_sample_size,
       created_by: item?.created_by,
       created_at: item?.created_at,
-      purchase_order_no:item?.purchase_order_no
-
+      purchase_order_no: item?.purchase_order_no,
     }));
   }, [projects, filterOption?.searchText, filterOption?.selectedOption]);
 

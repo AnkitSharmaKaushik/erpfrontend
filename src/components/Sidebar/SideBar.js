@@ -169,61 +169,60 @@ const SideBar = () => {
                 link={item.link}
               />
             ))} */}
-            {department !== isFinanceDept &&
-  (isDirectorRole ||
-    isSuperUserRole ||
-    isHodRole ||
-    isSrManagerRole ||
-    isManagerRole ||
-    isAssManagerRole) && (
-    <SidebarItem
-      icon={MdDashboard}
-      label="Dashboard"
-      link={dashboardLink}
-    />
-  )}
+        {department !== isFinanceDept &&
+          (isDirectorRole ||
+            isSuperUserRole ||
+            isHodRole ||
+            isSrManagerRole ||
+            isManagerRole ||
+            isAssManagerRole) && (
+            <SidebarItem
+              icon={MdDashboard}
+              label="Dashboard"
+              link={dashboardLink}
+            />
+          )}
 
-{userEmail === "admin@unimrkt.com" &&
-  department !== isFinanceDept &&
-  adminItems.map((item, index) => (
-    <SidebarItem
-      key={index}
-      icon={item.icon}
-      label={item.label}
-      link={item.link}
-    />
-  ))}
+        {userEmail === "admin@unimrkt.com" &&
+          department !== isFinanceDept &&
+          adminItems.map((item, index) => (
+            <SidebarItem
+              key={index}
+              icon={item.icon}
+              label={item.label}
+              link={item.link}
+            />
+          ))}
 
-{department === isFinanceDept
-  ? financeItem.map((item, index) => (
-      <SidebarItem
-        key={index}
-        icon={item.icon}
-        label={item.label}
-        link={item.link}
-      />
-    ))
-  : commonItems.map((item, index) => (
-      <SidebarItem
-        key={index}
-        icon={item.icon}
-        label={item.label}
-        link={item.link}
-      />
-    ))}
-
+        {department === isFinanceDept
+          ? financeItem.map((item, index) => (
+              <SidebarItem
+                key={index}
+                icon={item.icon}
+                label={item.label}
+                link={item.link}
+              />
+            ))
+          : commonItems.map((item, index) => (
+              <SidebarItem
+                key={index}
+                icon={item.icon}
+                label={item.label}
+                link={item.link}
+              />
+            ))}
       </div>
       <div className="w-2/12">
         {themeSetting.isSidebarOpen ? (
           <PiCaretDoubleLeftLight
-            className={`top-4 text-base text-black cursor-pointer absolute duration-300 font-extralight ${
+            className={`top-2 text-base text-black cursor-pointer absolute duration-300 font-extralight ${
               themeSetting.isDarkMode ? "text-white" : "text-black"
             }`}
             onClick={() => dispatch(toggleSideBar())}
           />
         ) : (
           <PiCaretDoubleRightLight
-            className={`top-4 text-base text-black cursor-pointer absolute duration-300 font-extralight ${
+            className={`top-2 text-base text-black cursor-pointer absolute duration-300 font-extralight ${
               themeSetting.isDarkMode ? "text-white" : "text-black"
             }`}
             onClick={() => dispatch(toggleSideBar())}

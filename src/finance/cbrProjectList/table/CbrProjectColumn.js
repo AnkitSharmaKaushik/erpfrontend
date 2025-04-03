@@ -85,6 +85,7 @@ export const CbrProjectColumn = () => {
           header: "CPI",
           cell: (info) => {
             const row = info.row.original;
+            // console.log("🚀 ~ CbrProjectColumn ~ row:", row)
             return row?.cpi == 0 ? (
               <Tooltip text={"View Multiple CPI"} className={"w-40"}>
                 <MdRemoveRedEye
@@ -209,7 +210,6 @@ export const CbrProjectColumn = () => {
             const row = info?.row?.original;
             return (
               <div className="flex justify-center">
-                {" "}
                 <CbrTableActionButton record={row} index={info?.row?.id} />
               </div>
             );

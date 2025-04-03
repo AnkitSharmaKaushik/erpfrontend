@@ -80,9 +80,9 @@ const UpdateStatus = () => {
     selectedRecord.status === "To Be Started"
       ? [
           "--Select Status--",
-          "In Progress",
-          "Completed",
-          "On Hold",
+          // "In Progress",
+          // "Completed",
+          // "On Hold",
           "Cancelled",
         ]
       : ["--Select Status--", "In Progress", "Completed", "On Hold"];

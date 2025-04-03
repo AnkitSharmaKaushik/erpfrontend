@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import InvoiceCompanyLogo from "./InvoiceCompanyLogo";
 import InvoiceCompanyName from "./InvoiceCompanyName";
-import InvoiceType from "./InvoiceType";
 import InvoiceCompanyAddressAndEmail from "./InvoiceCompanyAddressAndEmail";
 import InvoiceDateAndDueDate from "./InvoiceDateAndDueDate";
 import InvoiceClientDetails from "./InvoiceClientDetails";
@@ -15,7 +14,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getWithAuth, postWithAuth } from "../../provider/helper/axios";
 import {
-  ADVANCE_BILLING,
+  ABR_PROJECT_LIST,
   CBR_PROJECT_LIST,
   GENERATE_INVOICE,
   VIEW_CBR_DETAILS,
@@ -27,8 +26,7 @@ const CreateCbrInvoice = () => {
   const { companyDetails, selectedCompanyDetails } = useSelector(
     (store) => store.financeDepartment.cbr.createInvoice
   );
-  const { cbrProjectsData } = useSelector((store) => store.financeDepartment);
-  const { selectedRecord } = useSelector((store) => store.dataTable);
+
   const { clients } = useSelector((store) => store.projectData);
   const location = useLocation();
   const dispatch = useDispatch();
@@ -84,8 +82,9 @@ const CreateCbrInvoice = () => {
             return sum + Number(item.sample) * Number(item.cpi);
           }, 0)
         );
-      }, 0) - (ABRDetails[0]?.advance_invoice_amount || 0)
+      }, 0) - ((ABRDetails?.length > 0 ? ABRDetails[0]?.advance_invoice_amount : 0) || 0)
     ).toFixed(2),
+    
   });
 
   const [invoiceFinalData, setInvoiceFinalData] = useState({
@@ -102,7 +101,7 @@ const CreateCbrInvoice = () => {
     project: data?.id,
     services: invoiceData?.services,
     total_cost_usd: invoiceData?.totalCost,
-    type: invoiceData?.advanceType,
+    type: "CBR",
   });
 
   useEffect(() => {
@@ -115,7 +114,6 @@ const CreateCbrInvoice = () => {
       issue_date: invoiceData?.date,
       services: invoiceData?.services,
       total_cost_usd: invoiceData?.totalCost,
-      type: invoiceData?.advanceType,
       cost_components: invoiceData?.cost_components,
       description: invoiceData?.description,
     }));
@@ -164,11 +162,13 @@ const CreateCbrInvoice = () => {
   }, [invoiceData.sample, invoiceData.cpi]);
 
   const getCompany = async (id) => {
-    const abrResponse = await getWithAuth(ADVANCE_BILLING);
+    const abrResponse = await getWithAuth(ABR_PROJECT_LIST);
     const currentProjectWithABR = abrResponse?.data?.filter(
       (item) => item?.project?.id === data?.id
     );
-    setABRDetails(currentProjectWithABR);
+    setABRDetails(currentProjectWithABR || []); // Ensure it is always an array
+
+    // setABRDetails(currentProjectWithABR);
     const cbrResponse = await getWithAuth(VIEW_CBR_DETAILS(data?.id));
     setCBRDetails(cbrResponse?.data);
   };
@@ -226,11 +226,20 @@ const CreateCbrInvoice = () => {
             invoiceData={invoiceData}
             setInvoiceData={setInvoiceData}
           />
-          <InvoiceType
-            setInvoiceData={setInvoiceData}
-            ABRDetails={ABRDetails}
-            data={invoiceData}
-          />
+          <div className="w-full">
+            <div className="flex flex-col items-end">
+              <div className="m-1 flex items-center">
+                <label className="font-semibold text-gray-800 mr-2 min-w-24">
+                  Invoice Type:
+                </label>
+                <input
+                  disabled
+                  value={"CBR"}
+                  className="p-1  pl-2 border bg-gray-200 rounded-md"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -271,7 +280,10 @@ const CreateCbrInvoice = () => {
           Generate Invoice
         </button>
         <button
-          onClick={()=>{dispatch(toggleIsCreateInvoice());navigate(-1)}}
+          onClick={() => {
+            dispatch(toggleIsCreateInvoice());
+            navigate(-1);
+          }}
           className="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl shadow-lg transition-transform transform hover:scale-105"
         >
           Close

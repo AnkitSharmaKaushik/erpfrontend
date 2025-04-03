@@ -46,13 +46,12 @@ const ProjectStatusTabs = ({ className }) => {
   ];
 
   return (
-    <div className={className}>
       <div
         className={`${
           darkMode ? "bg-black text-white" : ""
         } relative flex overflow-x-auto no-scrollbar`}
       >
-        <div className="flex flex-nowrap">
+        {/* <div className="flex flex-nowrap">
           {buttonName.map((item, index) => (
             <Button
               key={index}
@@ -64,13 +63,34 @@ const ProjectStatusTabs = ({ className }) => {
                   : darkMode
                   ? "text-gray-400 hover:text-blue-600"
                   : "text-gray-600 hover:text-blue-600"
-              } px-2 py-2 focus:outline-none transition-all duration-500 text-sm mr-2 bg-gray-100 rounded-md filterTabsButton`}
+              } px-1 py-2 focus:outline-none transition-all duration-500 text-xs mr-2 bg-gray-100 rounded-md filterTabsButton`}
               onClick={(e) => handleActiveTab(e, index)}
             />
           ))}
-        </div>
+        </div> */}
+        <div className="flex flex-nowrap">
+  {buttonName.map((item, index) => (
+    <Button
+      key={index}
+      name={item}
+      value={buttonValue[index]}
+      className={`${
+        activeTab == buttonValue[index]
+          ? "text-white bg-green-400"
+          : darkMode
+          ? "text-gray-400 hover:text-blue-600"
+          : "text-gray-600 hover:text-blue-600"
+      } 
+      px-2 py-2 focus:outline-none transition-all duration-500 
+      text-[clamp(10px,0.9vw,14px)]   /* Dynamically Adjusts Font Size */
+      mr-2 bg-gray-100 rounded-md filterTabsButton 
+      whitespace-nowrap`}  /* Prevents Line Breaks */
+      onClick={(e) => handleActiveTab(e, index)}
+    />
+  ))}
+</div>
+
       </div>
-    </div>
   );
 };
 

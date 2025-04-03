@@ -25,12 +25,12 @@ export const CbrProjectTableData = () => {
             return false;
           })
         )
-      : cbrProjectsData;
-
-    // Filter projects based on activeTabs
-    filteredData = filteredData.filter((item) => {
-      return item.status === cbrActiveTabs;
-    });
+        : cbrProjectsData;
+        
+        // Filter projects based on activeTabs
+        filteredData = filteredData.filter((item) => {
+          return item.status === cbrActiveTabs;
+        });
 
     // Map data for the table
     return filteredData.map((item) => ({
@@ -57,7 +57,7 @@ export const CbrProjectTableData = () => {
       assigned_to:
         item?.project_manager?.name ?? item?.project?.assigned_to?.name,
       sample: item?.sample,
-      project_samples: item?.project_samples,
+      project_samples: item?.project?.project_samples,
       project_actual_start_date: item?.project_actual_start_date,
       total_achievement: item?.total_achievement,
       remaining_interview: item?.remaining_interview,

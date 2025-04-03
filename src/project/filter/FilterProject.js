@@ -7,14 +7,14 @@ import useClientList from "../../../utils/hooks/useClientList.js";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addSearchText,
-  toggleFilterOption,
+  toggleIsOpenFilterDrawer,
 } from "../../../utils/slices/filterSlice.js";
 import { setProjects } from "../../../utils/slices/projectSlice.js";
 
 const FilterProject = () => {
   const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
   const { projects } = useSelector((store) => store.projectData);
-  const { selectedOptions, openFilter, filterOption } = useSelector(
+  const { selectedOptions, openFilterDrawer, filterOption } = useSelector(
     (store) => store.filterSlice
   );
   const dispatch = useDispatch();
@@ -80,18 +80,33 @@ const FilterProject = () => {
       <div className="flex items-center">
         <DateRangeFilter dateRange={dateRange} setDateRange={setDateRange} />
       </div>
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <button
           className="p-2 border border-gray-200 bg-gray-100 rounded-sm text-sm flex items-center text-blue-400"
           onClick={() => {
-            dispatch(toggleFilterOption());
+            dispatch(toggleIsOpenFilterDrawer());
           }}
         >
           <IoFilter className="mr-2" />
           Filter
         </button>
+      </div> */}
+      <div className="flex items-center">
+        <button
+          className="p-1 border border-gray-200 bg-gray-100 rounded-sm 
+               text-[clamp(0.5rem, 0.9vw, 0.625rem)] flex items-center 
+               text-blue-400 cursor-pointer gap-1"
+          onClick={() => {
+            dispatch(toggleIsOpenFilterDrawer());
+          }}
+        >
+          {/* Icon scales with text */}
+          <IoFilter className="w-[clamp(0.5rem, 1.2vw, 0.8rem)] h-[clamp(0.75rem, 1.2vw, 1rem)]" />
+          Filter
+        </button>
       </div>
-      {openFilter && <FilterDrawer />}
+
+      {openFilterDrawer && <FilterDrawer />}
     </div>
   );
 };

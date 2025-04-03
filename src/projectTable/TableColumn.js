@@ -71,6 +71,7 @@ export const TableColumn = () => {
                             const enableStatus =
                               item.status !== "CBR Raised" &&
                               item.status !== "Completed" &&
+                              item.status !== "On Hold" &&
                               item.status !== "Cancelled";
                             return enableDate && enableStatus;
                           })
@@ -159,7 +160,7 @@ export const TableColumn = () => {
           cell: (info) => info.getValue(),
         }),
         columnHelper.accessor("project_client_pm", {
-          id: "client_pm",
+          id: "project_client_pm",
           header: "Client PM",
           cell: (info) => info.getValue(),
         }),

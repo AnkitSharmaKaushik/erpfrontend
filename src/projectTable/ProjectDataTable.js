@@ -24,7 +24,7 @@ const ProjectDataTable = () => {
   const [drawerContent, setDrawerContent] = useState(null);
 
   return (
-    <div className={`${darkMode ? "bg-black" : ""} rounded-md mt-12 shadow-lg`}>
+    <div className={`${darkMode ? "bg-black" : ""} rounded-md shadow-lg`}>
       <div className="w-full">
         <div
           className={`${
@@ -35,43 +35,37 @@ const ProjectDataTable = () => {
             ProjectHeading={"All Project Details"}
             NoProjectHeading={"No Project Found"}
           />
-          <div className="">
-            <div className="relative">
-              <div className="relative w-full flex justify-between">
-                <div className="">
-                  <ProjectStatusTabs
-                    className={
-                      "absolute top-[10px] overflow-x-auto w-2/3 left-0 z-10 no-scrollbar"
-                    }
-                  />
-                </div>
-                <div className="my-2">
-                  {canShowAddProjectButton() && (
-                    <Link to={"/entry-page"}>
-                      <Button
-                        name={
-                          <Tooltip text="Add New Project" position="bottom">
-                            <MdAddTask className="text-white text-2xl" />
-                          </Tooltip>
-                        }
-                        className={`${
-                          darkMode
-                            ? "bg-black text-white border-white"
-                            : " border-black"
-                        } p-[5px] border border-gray-200 bg-green-600 rounded-sm text-sm flex items-center justify-around text-blue-400 absolute right-11 -top-[34px] z-20 hover:scale-110`}
-                      />
-                    </Link>
-                  )}
-                  <FilterProject />
-                </div>
+          <div className="relative">
+            <div className="relative w-full flex justify-between items-center">
+              <div className="">
+                <ProjectStatusTabs />
               </div>
-              <SelectedRow
-                setDrawerContent={setDrawerContent}
-                setMultiEditFieldOpen={setMultiEditFieldOpen}
-              />
-              <div className="w-full tableClass" id="tableClass">
-                <MainTable />
+              <div className="my-2">
+                {canShowAddProjectButton() && (
+                  <Link to={"/entry-page"}>
+                    <Button
+                      name={
+                        <Tooltip text="Add New Project" position="bottom">
+                          <MdAddTask className="text-white text-2xl" />
+                        </Tooltip>
+                      }
+                      className={`${
+                        darkMode
+                          ? "bg-black text-white border-white"
+                          : " border-black"
+                      } p-[5px] border border-gray-200 bg-green-600 rounded-sm text-sm flex items-center justify-around text-blue-400 absolute right-11 -top-[34px] z-20 hover:scale-110`}
+                    />
+                  </Link>
+                )}
+                <FilterProject />
               </div>
+            </div>
+            <SelectedRow
+              setDrawerContent={setDrawerContent}
+              setMultiEditFieldOpen={setMultiEditFieldOpen}
+            />
+            <div className="w-full tableClass" id="tableClass">
+              <MainTable />
             </div>
           </div>
         </div>

@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 const InvoiceSampleAndCostDetails = ({
   CBRDetails,
   setInvoiceData,
-  invoiceData,
   ABRDetails,
 }) => {
   const handleInputChange = (e) => {
@@ -21,7 +20,6 @@ const InvoiceSampleAndCostDetails = ({
         }))
       ),
     }));
-    console.log("🚀 ~ CBRDetails:", CBRDetails)
   }, [CBRDetails]);
 
   const totalProjectCost = CBRDetails?.reduce((total, cbr) => {
@@ -33,10 +31,7 @@ const InvoiceSampleAndCostDetails = ({
     );
   }, 0);
 
-  const advanceAmount =
-    invoiceData?.advanceType === "CBR"
-      ? ABRDetails[0]?.advance_invoice_amount || 0
-      : 0;
+  const advanceAmount = ABRDetails[0]?.advance_invoice_amount || 0;
 
   const finalPayment = (totalProjectCost - advanceAmount).toFixed(2);
 
@@ -173,13 +168,11 @@ const InvoiceSampleAndCostDetails = ({
             <td className="border p-2">{"$" + totalProjectCost?.toFixed(2)}</td>
           </tr>
 
-          {invoiceData?.advanceType === "CBR" && (
-            <tr className="border">
-              <td className="border p-2">Less: Advance against Invoice</td>
-              <td colSpan="3"></td>
-              <td className="border p-2">{"$" + advanceAmount?.toFixed(2)}</td>
-            </tr>
-          )}
+          <tr className="border">
+            <td className="border p-2">Less: Advance against Invoice</td>
+            <td colSpan="3"></td>
+            <td className="border p-2">{"$" + advanceAmount?.toFixed(2)}</td>
+          </tr>
 
           <tr className="border">
             <td className="border p-2">Final Payment</td>

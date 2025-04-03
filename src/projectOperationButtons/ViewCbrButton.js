@@ -7,8 +7,6 @@ const ViewCbrButton = () => {
   const dispatch = useDispatch();
 
   const handleViewCBR = () => {
-    console.log("clicked");
-    
     dispatch(toggleViewCbr());
   };
   return (

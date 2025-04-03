@@ -10,10 +10,12 @@ import {
   toggleViewMultipleCpiSample,
 } from "../../../utils/slices/addMutipleSampleCpiSlice";
 import {
-    setAddlnFee,
+  setAddlnFee,
+  setSelectedRecord,
   setSowList,
   toggleShowAddlnFee,
   toggleShowSowList,
+  toggleViewCbr,
 } from "../../../utils/slices/dataTableSlice";
 
 const columnHelper = createColumnHelper();
@@ -25,9 +27,9 @@ const ProjectReportColumn = () => {
     dispatch(addMultipleSample(row));
     dispatch(toggleViewMultipleCpiSample(true));
   };
-  const handleViewAddnl = (row) => {    
-   dispatch(setAddlnFee(row))
-   dispatch(toggleShowAddlnFee())
+  const handleViewAddnl = (row) => {
+    dispatch(setAddlnFee(row));
+    dispatch(toggleShowAddlnFee());
   };
 
   const handleViewSow = (data) => {
@@ -310,12 +312,6 @@ const ProjectReportColumn = () => {
             );
           },
         }),
-      ],
-    }),
-    columnHelper.group({
-      id: "#",
-      header: () => <span className="text-center flex justify-center"></span>,
-      columns: [
         columnHelper.accessor("Progress", {
           id: "Progress",
           header: "Progress",
@@ -364,7 +360,12 @@ const ProjectReportColumn = () => {
           header: "Man Days",
           cell: (info) => info.getValue(),
         }),
-
+      ],
+    }),
+    columnHelper.group({
+      id: "#",
+      header: () => <span className="text-center flex justify-center"></span>,
+      columns: [
         columnHelper.accessor("status", {
           id: "status",
           header: "Status",
@@ -381,7 +382,10 @@ const ProjectReportColumn = () => {
               return (
                 <Tooltip text={"View CBR"} className={"w-40"}>
                   <button
-                    onClick={() => handleGetInvoice(info.row.original)}
+                    onClick={() => {dispatch(setSelectedRecord(info.row.original)), dispatch(toggleViewCbr())
+                    }}
+                        // dispatch(setSelectedRecord(record));
+                    
                     className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
                   >
                     <img alt="CBR" src={viewCBR} className="text-xs w-4 h-4" />
@@ -394,7 +398,7 @@ const ProjectReportColumn = () => {
             ) {
               return (
                 <>
-                  <Tooltip text={"View CBR"} className={"w-40"}>
+                  <Tooltip text={"View CBR1"} className={"w-40"}>
                     <button
                       onClick={() => handleGetInvoice(info.row.original)}
                       className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
@@ -406,7 +410,7 @@ const ProjectReportColumn = () => {
                       />
                     </button>
                   </Tooltip>
-                  <Tooltip text={"View CBR"} className={"w-40"}>
+                  <Tooltip text={"View CBR2"} className={"w-40"}>
                     <button
                       onClick={() => handleGetInvoice(info.row.original)}
                       className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
@@ -427,10 +431,11 @@ const ProjectReportColumn = () => {
             ) {
               return (
                 <>
-                  <Tooltip text={"View CBR"} className={"w-40"}>
+                  <Tooltip text={"View CBR3"} className={"w-40"}>
                     <button
-                      onClick={() => handleGetInvoice(info.row.original)}
-                      className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
+onClick={() => {
+  dispatch(toggleViewCbr());
+}}                      className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
                     >
                       <img
                         alt="CBR"
@@ -439,10 +444,11 @@ const ProjectReportColumn = () => {
                       />
                     </button>
                   </Tooltip>
-                  <Tooltip text={"View CBR"} className={"w-40"}>
+                  <Tooltip text={"View CBR4"} className={"w-40"}>
                     <button
-                      onClick={() => handleGetInvoice(info.row.original)}
-                      className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
+onClick={() => {
+  dispatch(toggleViewCbr());
+}}                      className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
                     >
                       <img
                         alt="CBR"
@@ -451,9 +457,11 @@ const ProjectReportColumn = () => {
                       />
                     </button>
                   </Tooltip>
-                  <Tooltip text={"View CBR"} className={"w-40"}>
+                  <Tooltip text={"View CBR5"} className={"w-40"}>
                     <button
-                      onClick={() => handleGetInvoice(info.row.original)}
+                      onClick={() => {
+                        dispatch(toggleViewCbr());
+                      }}
                       className="cursor-pointer text-lg text-blue-600 hover:text-blue-800"
                     >
                       <img

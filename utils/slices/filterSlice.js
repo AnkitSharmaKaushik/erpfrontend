@@ -11,7 +11,7 @@ const filterSlice = createSlice({
         endDate: "",
       },
     },
-    openFilter: false,
+    openFilterDrawer: false,
   },
   reducers: {
     toggleSelectedOption: (state, action) => {
@@ -36,8 +36,8 @@ const filterSlice = createSlice({
     addEndDateRange: (state, action) => {
       state.filterOption.dateRange.endDate = action.payload;
     },
-    toggleFilterOption: (state) => {
-      state.openFilter = !state.openFilter;
+    toggleIsOpenFilterDrawer: (state) => {
+      state.openFilterDrawer = !state.openFilterDrawer;
     },
   },
 });
@@ -46,7 +46,7 @@ export const {
   toggleSelectedOption,
   removeAllSelectedOption,
   addSearchText,
-  toggleFilterOption,
+  toggleIsOpenFilterDrawer,
   addStartDateRange,
   addEndDateRange,
 } = filterSlice.actions;

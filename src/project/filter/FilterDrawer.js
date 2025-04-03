@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import useUserData from "../../../utils/hooks/useUserData";
 import {
   removeAllSelectedOption,
-  toggleFilterOption,
+  toggleIsOpenFilterDrawer,
 } from "../../../utils/slices/filterSlice";
 import { useHandleOutsideClick } from "../../../utils/hooks/useHandleOutSideClick";
 import {
@@ -17,7 +17,7 @@ import {
 } from "../../../utils/slices/selectedUserFilterSlice";
 
 const FilterDrawer = () => {
-  const { filterOption, openFilter } = useSelector(
+  const { filterOption, openFilterDrawer } = useSelector(
     (store) => store.filterSlice
   );
   const clientsList = useSelector((store) => store.projectData.clients);
@@ -78,7 +78,7 @@ const FilterDrawer = () => {
 
   const closeDrawerRight = () => {
     document.body.classList.remove("DrawerBody");
-    dispatch(toggleFilterOption());
+    dispatch(toggleIsOpenFilterDrawer());
   };
   useHandleOutsideClick(filterDrawer, closeDrawerRight);
 
@@ -114,7 +114,7 @@ const FilterDrawer = () => {
 
   return (
     <div>
-      {openFilter && (
+      {openFilterDrawer && (
         <div
           className={`${
             darkMode ? "bg-black text-white" : "bg-white text-black"

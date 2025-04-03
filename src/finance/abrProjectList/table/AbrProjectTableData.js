@@ -62,7 +62,7 @@ export const AbrProjectTableData = () => {
       assigned_to:
         item?.project_manager?.name ?? item?.project?.assigned_to?.name,
       sample: item?.sample,
-      project_samples: item?.project_samples,
+      project_samples: item?.project?.project_samples,
       project_actual_start_date: item?.project_actual_start_date,
       total_achievement: item?.total_achievement,
       remaining_interview: item?.remaining_interview,

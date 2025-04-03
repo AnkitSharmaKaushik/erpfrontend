@@ -283,7 +283,7 @@ const DateRangeFilter = ({ dateRange, setDateRange }) => {
 
   return (
     <div className="relative mr-1">
-      <div
+      {/* <div
         className="p-2 border border-gray-200 bg-gray-100 rounded-sm text-sm flex items-center justify-around text-blue-400 cursor-pointer"
         onClick={() => setOpenDateRange(!openDateRange)}
       >
@@ -298,7 +298,29 @@ const DateRangeFilter = ({ dateRange, setDateRange }) => {
           }
           className={"text-sm"}
         />
-      </div>
+      </div> */}
+     <div
+  className="p-1 border border-gray-200 bg-gray-100 rounded-sm 
+  text-[clamp(0.625rem, 0.9vw, 0.75rem)] flex items-center gap-1 text-blue-400 
+  cursor-pointer whitespace-nowrap"
+  onClick={() => setOpenDateRange(!openDateRange)}
+>
+  {/* Icon scales properly */}
+  <BsCalendarDate className="w-[clamp(0.75rem, 1.2vw, 1rem)] h-[clamp(0.75rem, 1.2vw, 1rem)]" />
+
+  <Button
+    name={
+      dateRange.startDate && dateRange.endDate
+        ? `${moment(dateRange?.startDate).format("DD MMM")} - ${moment(
+            dateRange?.endDate
+          ).format("DD MMM")}`
+        : "Date Range"
+    }
+    className="text-[clamp(0.5rem, 0.9vw, 0.625rem)]"
+  />
+</div>
+
+
       {openDateRange && (
         <div
           className="fixed top-52 -right-20 w-96 h-96 overflow-visible bg-gray-50 z-50 -translate-x-1/2"

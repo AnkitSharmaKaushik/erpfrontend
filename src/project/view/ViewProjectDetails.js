@@ -148,7 +148,7 @@ const ViewProjectDetails = () => {
             { label: "Status", value: data.status },
             {
               label: "Sow",
-              value: data?.documents?.map((d) => d?.upload_document) && (
+              value: data?.documents?.length ? (
                 <div className="flex">
                   <Link
                     to={BASEURL + data.documents.map((d) => d.upload_document)}
@@ -166,6 +166,8 @@ const ViewProjectDetails = () => {
                     </span>
                   </Link>
                 </div>
+              ) : (
+                "N/A"
               ),
             },
           ].map(({ label, value, hasDetails }, index) =>

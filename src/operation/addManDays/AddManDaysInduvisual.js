@@ -96,9 +96,6 @@ const AddManDaysInduvisual = () => {
     if (!total_achievement) {
       errorMsg.total_achievement = "Achieve Target is required.";
     }
-    if (total_achievement == 0) {
-      errorMsg.total_achievement = "Achieve Target cannot be 0.";
-    }
 
     return errorMsg;
   };

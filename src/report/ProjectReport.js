@@ -2,8 +2,6 @@ import { useMemo } from "react";
 import { useSelector } from "react-redux";
 import ProjectReportColumn from "./projectReport/ProjectReportColumn";
 import { ProjectReportData } from "./projectReport/ProjectReportData";
-import ProjectNameAndFilter from "../project/filter/ProjectNameAndFilter";
-import FilterProject from "../project/filter/FilterProject";
 import Popup from "../Atom/Popup";
 import ViewMultipleSampleCpi from "../project/view/ViewMultipleSampleCpi";
 import ViewSowUploadList from "../project/view/ViewSowUploadList";
@@ -15,13 +13,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import ViewAddlnFee from "../project/view/VIewAddlnFee";
+import ProjectReportFilterAndName from "./projectReport/ProjectReportFilterAndName";
+import ProjectReportFilter from "./projectReport/ProjectReportFilter";
+import ViewCbr from "../project/view/ViewCbr";
 
 const ProjectReport = () => {
   const darkMode = useSelector((store) => store.themeSetting.isDarkMode);
   const { isViewMultipleSampleCpiRecords } = useSelector(
     (store) => store.addMultipleSampleCpi
   );
-  const { showSowList, showAddlnFee } = useSelector((store) => store.dataTable);
+  const { showSowList, showAddlnFee, isViewCbr } = useSelector(
+    (store) => store.dataTable
+  );
 
   useProjectData();
 
@@ -49,13 +52,13 @@ const ProjectReport = () => {
             isDrawerOpen ? "opacity-30 relative overflow-hidden" : "opacity-100"
           }`}
         >
-          <ProjectNameAndFilter
+          <ProjectReportFilterAndName
             data={data}
             ProjectHeading={"Project Report"}
             NoProjectHeading={"No Project Found"}
           />
           <div className="text-right flex justify-end m-2">
-            <FilterProject />
+            <ProjectReportFilter />
           </div>
           <div className="">
             <div className="relative overflow-x-scroll">
@@ -122,6 +125,11 @@ const ProjectReport = () => {
         <Popup>
           <h1>This is Sow List</h1>
           <ViewSowUploadList />
+        </Popup>
+      )}
+      {isViewCbr && (
+        <Popup>
+          <ViewCbr />
         </Popup>
       )}
     </div>

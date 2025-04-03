@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 const SidebarItem = ({ icon: Icon, label, link }) => {
   const sideBarOpen = useSelector((store) => store.themeSetting.isSidebarOpen);
+  
   return (
     <div className="flex justify-center items-center pt-4">
       <Link to={link} className="text-xl">
