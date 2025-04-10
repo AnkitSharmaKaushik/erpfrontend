@@ -1,6 +1,6 @@
 // export const BASEURL = "https://crmapi.unimrkt.com"; //live server
-export const BASEURL = "https://uaterpapi.unimrkt.com"; //uat Server
-// export const BASEURL = "http://127.0.0.1:8000";
+// export const BASEURL = "https://uaterpapi.unimrkt.com"; //uat Server
+export const BASEURL = "http://127.0.0.1:8000";
 // export const BASEURL = "http://65.0.180.82"; // new Uat Server //temp
 // export const BASEURL = "http://13.203.98.89" // new unimrkt india
 export const DEPARTMENTS_APIS = BASEURL + "/api/user/department/";
